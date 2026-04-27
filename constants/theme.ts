@@ -1,0 +1,26 @@
+export const theme = {
+  light: {
+    background: "#fff",
+    text: "#000",
+    basic: "#a50cad",
+    purpleGradient: ["#981aca", "#3d0546"],
+    critical: ["#963e15", "#f4773e"],
+    criticalToBackground: ["#963e15", "#fff"],
+    balanced: ["#004aad", "#5de0e6"],
+    balancedToBackground: ["#004aad", "#fff"],
+    positive: ["#0097b2", "#7ed957"],
+    positiveToBackground: ["#0097b2", "#fff"],
+  },
+  dark: {
+    background: "#19091e",
+    text: "#fff",
+    basic: "#a50cad",
+    purpleGradient: ["#981aca", "#3d0546"],
+    critical: ["#963e15", "#f4773e"],
+    criticalToBackground: ["#963e15", "#19091e"],
+    balanced: ["#004aad", "#5de0e6"],
+    balancedToBackground: ["#004aad", "#19091e"],
+    positive: ["#0097b2", "#7ed957"],
+    positiveToBackground: ["#0097b2", "#19091e"],
+  },
+};
