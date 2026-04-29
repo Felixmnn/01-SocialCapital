@@ -6,9 +6,13 @@ import { TextInput } from "react-native";
 const CustomTextInput = ({
   value,
   onChangeText,
+  onBlur,
+  autoFocus = false,
 }: {
   value: string;
   onChangeText: (text: string) => void;
+  onBlur?: () => void;
+  autoFocus?: boolean;
 }) => {
   const { colorScheme } = useColorScheme();
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
@@ -17,6 +21,8 @@ const CustomTextInput = ({
     <TextInput
       value={value}
       onChangeText={onChangeText}
+      onBlur={onBlur}
+      autoFocus={autoFocus}
       style={{
         backgroundColor: current.background,
         color: current.text,
@@ -25,6 +31,7 @@ const CustomTextInput = ({
         borderWidth: 2,
         padding: 10,
         width: 200,
+        textAlign: "center",
       }}
     />
   );

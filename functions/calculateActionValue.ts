@@ -55,7 +55,25 @@ export function calculateNewScoreBasedOnBed(
   lastTimeAction: Date,
   actionValue: number,
 ): number {
-  return actionValue;
+  const MAX_BED = 1.75;
+  const GROWTH = 0.25;
+  const THRESHOLD_DAYS = 2;
+
+  const now = new Date();
+  const msPerDay = 1000 * 60 * 60 * 24;
+
+  const daysSince = Math.max(
+    0,
+    Math.floor((now.getTime() - lastTimeAction.getTime()) / msPerDay),
+  );
+
+  // Erst nach Threshold wächst es
+  const effectiveDays = Math.max(0, daysSince - THRESHOLD_DAYS);
+
+  let bedFactor = 1 + GROWTH * Math.log(1 + effectiveDays);
+  bedFactor = Math.min(MAX_BED, bedFactor);
+
+  return currentScore + actionValue * bedFactor;
 }
 
 export function calculateNewScoreBasedOnQAN(
@@ -63,5 +81,15 @@ export function calculateNewScoreBasedOnQAN(
   actionValue: number,
   timeStampsLast30Days: Date[],
 ): number {
-  return actionValue;
+  const k = 0.4; // wie stark Abnahme ist
+  const MIN_QAN = 0.4; // Minimum
+
+  const count = timeStampsLast30Days.length;
+
+  // klassische Abnahmefunktion
+  let qanFactor = 1 / (1 + k * Math.max(0, count - 1));
+
+  qanFactor = Math.max(MIN_QAN, qanFactor);
+
+  return currentScore + actionValue * qanFactor;
 }

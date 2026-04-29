@@ -1,11 +1,30 @@
 import { theme } from "@/constants/theme";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
-import React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import * as NavigationBar from "expo-navigation-bar";
+import { router, Tabs } from "expo-router";
+import React, { useEffect } from "react";
+import { Platform, TouchableOpacity, View } from "react-native";
 
 export default function Layout() {
   const currentTheme = theme["dark"];
+
+  useEffect(() => {
+    if (Platform.OS !== "android") {
+      return;
+    }
+
+    const applyNavigationBarBehavior = async () => {
+      await NavigationBar.setBehaviorAsync("overlay-swipe");
+      await NavigationBar.setVisibilityAsync("hidden");
+    };
+
+    void applyNavigationBarBehavior();
+
+    return () => {
+      void NavigationBar.setVisibilityAsync("visible");
+    };
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
@@ -15,9 +34,13 @@ export default function Layout() {
           headerShown: false,
           tabBarShowLabel: false,
           tabBarStyle: {
-            backgroundColor: currentTheme.basic,
+            backgroundColor: currentTheme.purpleGradient[1],
             height: 70,
             position: "absolute",
+            borderTopWidth: 0,
+            borderTopColor: "transparent",
+            elevation: 0,
+            shadowOpacity: 0,
           },
         }}
       >
@@ -26,12 +49,14 @@ export default function Layout() {
           name="you"
           options={{
             tabBarIcon: ({ focused }) => (
-              <FontAwesome5
-                name="user"
-                size={22}
-                color="white"
-                solid={focused}
-              />
+              <View style={{ width: 42, alignItems: "center" }}>
+                <FontAwesome5
+                  name="user"
+                  size={30}
+                  color={focused ? "white" : "#602568"}
+                  solid={true}
+                />
+              </View>
             ),
           }}
         />
@@ -41,12 +66,14 @@ export default function Layout() {
           name="others"
           options={{
             tabBarIcon: ({ focused }) => (
-              <FontAwesome5
-                name="users"
-                size={22}
-                color="white"
-                solid={focused}
-              />
+              <View style={{ width: 42, alignItems: "center" }}>
+                <FontAwesome5
+                  name="users"
+                  size={30}
+                  color={focused ? "white" : "#602568"}
+                  solid={true}
+                />
+              </View>
             ),
           }}
         />
@@ -55,23 +82,37 @@ export default function Layout() {
       {/* ➕ FLOATING BUTTON (KEIN SCREEN!) */}
       <TouchableOpacity
         onPress={() => {
+          router.push("/dailyEntrys");
           console.log("Plus gedrückt");
         }}
         style={{
           position: "absolute",
           bottom: 40,
           alignSelf: "center",
-          width: 65,
-          height: 65,
-          borderRadius: 32.5,
-          backgroundColor: "white",
+          width: 60,
+          height: 60,
+          borderRadius: 30,
           justifyContent: "center",
           alignItems: "center",
           zIndex: 999,
           elevation: 10,
         }}
       >
-        <FontAwesome5 name="plus" size={24} color={currentTheme.basic} />
+        <LinearGradient
+          colors={[
+            currentTheme.purpleGradient[0],
+            currentTheme.purpleGradient[1],
+          ]}
+          style={{
+            width: 60,
+            height: 60,
+            borderRadius: 30,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <FontAwesome5 name="plus" size={28} color={"white"} solid={true} />
+        </LinearGradient>
       </TouchableOpacity>
     </View>
   );

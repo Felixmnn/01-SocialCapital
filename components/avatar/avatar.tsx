@@ -13,20 +13,28 @@ import Svg, { Circle, ClipPath, Defs, G, Path } from "react-native-svg";
 const RenderAvatar = ({
   avatar,
   selected,
+  size = "medium",
 }: {
   avatar: Avatar;
   selected: boolean;
+  size?: "small" | "medium" | "large";
 }) => {
   if (avatar.selectedCharacter === "character1") {
     return (
       <View
-        className=" items-center justify-center "
+        className=" items-center justify-center  "
         style={{
-          height: 120,
-          width: 120,
+          borderWidth: selected ? 4 : 0,
+          borderColor: selected ? "blue" : "transparent",
+          height: size == "medium" ? 120 : size == "small" ? 60 : 180,
+          width: size == "medium" ? 120 : size == "small" ? 60 : 180,
         }}
       >
-        <Svg width={200} height={120} viewBox="0 0 358 370">
+        <Svg
+          width={size == "medium" ? 200 : size == "small" ? 100 : 300}
+          height={size == "medium" ? 120 : size == "small" ? 60 : 180}
+          viewBox="0 0 358 370"
+        >
           <Defs>
             <ClipPath id="circleClip">
               <Circle cx="190" cy="190" r="180" />
@@ -63,11 +71,18 @@ const RenderAvatar = ({
       <View
         className=" items-center justify-center "
         style={{
-          height: 120,
-          width: 120,
+          borderWidth: selected ? 4 : 0,
+          borderColor: selected ? "blue" : "transparent",
+
+          height: size == "medium" ? 120 : size == "small" ? 60 : 180,
+          width: size == "medium" ? 120 : size == "small" ? 60 : 180,
         }}
       >
-        <Svg width={200} height={120} viewBox="0 0 358 370">
+        <Svg
+          width={size == "medium" ? 200 : size == "small" ? 100 : 300}
+          height={size == "medium" ? 120 : size == "small" ? 60 : 180}
+          viewBox="0 0 358 370"
+        >
           <Defs>
             <ClipPath id="circleClip">
               <Circle cx="190" cy="190" r="180" />
@@ -216,11 +231,18 @@ const RenderAvatar = ({
       <View
         className=" items-center justify-center "
         style={{
-          height: 120,
-          width: 120,
+          borderWidth: selected ? 4 : 0,
+          borderColor: selected ? "blue" : "transparent",
+
+          height: size == "medium" ? 120 : size == "small" ? 60 : 180,
+          width: size == "medium" ? 120 : size == "small" ? 60 : 180,
         }}
       >
-        <Svg width={200} height={120} viewBox="0 0 358 370">
+        <Svg
+          width={size == "medium" ? 200 : size == "small" ? 100 : 300}
+          height={size == "medium" ? 120 : size == "small" ? 60 : 180}
+          viewBox="0 0 358 370"
+        >
           <Defs>
             <ClipPath id="circleClip">
               <Circle cx="190" cy="190" r="180" />
@@ -345,11 +367,18 @@ const RenderAvatar = ({
       <View
         className=" items-center justify-center "
         style={{
-          height: 120,
-          width: 120,
+          borderWidth: selected ? 4 : 0,
+          borderColor: selected ? "blue" : "transparent",
+
+          height: size == "medium" ? 120 : size == "small" ? 60 : 180,
+          width: size == "medium" ? 120 : size == "small" ? 60 : 180,
         }}
       >
-        <Svg width={200} height={120} viewBox="0 0 358 370">
+        <Svg
+          width={size == "medium" ? 200 : size == "small" ? 100 : 300}
+          height={size == "medium" ? 120 : size == "small" ? 60 : 180}
+          viewBox="0 0 358 370"
+        >
           <Defs>
             <ClipPath id="circleClip">
               <Circle cx="190" cy="190" r="180" />
@@ -437,11 +466,18 @@ const RenderAvatar = ({
       <View
         className=" items-center justify-center "
         style={{
-          height: 120,
-          width: 120,
+          borderWidth: selected ? 4 : 0,
+          borderColor: selected ? "blue" : "transparent",
+
+          height: size == "medium" ? 120 : size == "small" ? 60 : 180,
+          width: size == "medium" ? 120 : size == "small" ? 60 : 180,
         }}
       >
-        <Svg width={200} height={120} viewBox="0 0 358 370">
+        <Svg
+          width={size == "medium" ? 200 : size == "small" ? 100 : 300}
+          height={size == "medium" ? 120 : size == "small" ? 60 : 180}
+          viewBox="0 0 358 370"
+        >
           <Defs>
             <ClipPath id="circleClip">
               <Circle cx="190" cy="190" r="180" />
@@ -520,11 +556,18 @@ const RenderAvatar = ({
       <View
         className=" items-center justify-center "
         style={{
-          height: 120,
-          width: 120,
+          borderWidth: selected ? 4 : 0,
+          borderColor: selected ? "blue" : "transparent",
+
+          height: size == "medium" ? 120 : size == "small" ? 60 : 180,
+          width: size == "medium" ? 120 : size == "small" ? 60 : 180,
         }}
       >
-        <Svg width={200} height={120} viewBox="0 0 358 370">
+        <Svg
+          width={size == "medium" ? 200 : size == "small" ? 100 : 300}
+          height={size == "medium" ? 120 : size == "small" ? 60 : 180}
+          viewBox="0 0 358 370"
+        >
           <Defs>
             <ClipPath id="circleClip">
               <Circle cx="190" cy="190" r="180" />
@@ -590,11 +633,18 @@ const RenderAvatar = ({
     <View
       className=" items-center justify-center "
       style={{
-        height: 120,
-        width: 120,
+        borderWidth: selected ? 4 : 0,
+        borderColor: selected ? "blue" : "transparent",
+
+        height: size == "medium" ? 120 : size == "small" ? 60 : 180,
+        width: size == "medium" ? 120 : size == "small" ? 60 : 180,
       }}
     >
-      <Svg width={200} height={120} viewBox="0 0 358 370">
+      <Svg
+        width={size == "medium" ? 200 : size == "small" ? 100 : 300}
+        height={size == "medium" ? 120 : size == "small" ? 60 : 180}
+        viewBox="0 0 358 370"
+      >
         <Defs>
           <ClipPath id="circleClip">
             <Circle cx="190" cy="190" r="180" />

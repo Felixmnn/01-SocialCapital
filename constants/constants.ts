@@ -1,11 +1,20 @@
-export const positiveAction = [
+export type Action = {
+  positiv: string;
+  quantor: "BED" | "QAN" | "INK" | "BED/QAN" | null;
+  startwert: number;
+  ink_faktor: number | null;
+  ink_kategorie: "Aufmerksamkeit" | "Unterstützung" | "Vertrauen" | null;
+  ink_light?: number | null;
+};
+
+export const positiveAction: Action[] = [
   {
     positiv: "Erkundigen",
     quantor: "BED/QAN",
     startwert: 6,
     ink_faktor: null,
-    ink_kategorie: "Aufmersamkeit",
-    ink_light: 0.1,
+    ink_kategorie: "Aufmerksamkeit",
+    ink_light: 0.01,
   },
   {
     positiv: "Treffen vorschlagen",
@@ -13,13 +22,13 @@ export const positiveAction = [
     startwert: 5,
     ink_faktor: null,
     ink_kategorie: "Aufmerksamkeit",
-    ink_light: 0.05,
+    ink_light: 0.005,
   },
   {
     positiv: "Problem helfen",
     quantor: "INK",
     startwert: 14,
-    ink_faktor: 0.14,
+    ink_faktor: 0.014,
     ink_kategorie: "Unterstützung",
     ink_light: null,
   },
@@ -29,7 +38,7 @@ export const positiveAction = [
     startwert: 6,
     ink_faktor: null,
     ink_kategorie: "Unterstützung",
-    ink_light: 0.04,
+    ink_light: 0.004,
   },
   {
     positiv: "Etwas einladen",
@@ -37,14 +46,14 @@ export const positiveAction = [
     startwert: 9,
     ink_faktor: null,
     ink_kategorie: "Unterstützung",
-    ink_light: 0.05,
+    ink_light: 0.005,
   },
   {
     positiv: "Zusage einhalten",
     quantor: "INK",
     startwert: 15,
-    ink_faktor: 0.15,
-    ink_kategorie: "Vertauen",
+    ink_faktor: 0.015,
+    ink_kategorie: "Vertrauen",
     ink_light: null,
   },
   {
@@ -53,7 +62,7 @@ export const positiveAction = [
     startwert: 12,
     ink_faktor: null,
     ink_kategorie: "Aufmerksamkeit",
-    ink_light: 0.12,
+    ink_light: 0.012,
   },
   {
     positiv: "Sich bedanken",
@@ -61,7 +70,7 @@ export const positiveAction = [
     startwert: 5,
     ink_faktor: null,
     ink_kategorie: "Aufmerksamkeit",
-    ink_light: 0.04,
+    ink_light: 0.004,
   },
   {
     positiv: "Unterstützung anbieten",
@@ -69,7 +78,7 @@ export const positiveAction = [
     startwert: 7,
     ink_faktor: null,
     ink_kategorie: "Unterstützung",
-    ink_light: 0.06,
+    ink_light: 0.006,
   },
   {
     positiv: "Ehrliches Kompliment",
@@ -77,11 +86,11 @@ export const positiveAction = [
     startwert: 6,
     ink_faktor: null,
     ink_kategorie: "Aufmerksamkeit",
-    ink_light: 0.06,
+    ink_light: 0.006,
   },
 ];
 
-export const negativeAction = [
+export const negativeAction: Action[] = [
   {
     positiv: "Keine Zeit sagen",
     quantor: "QAN",
@@ -93,14 +102,14 @@ export const negativeAction = [
     positiv: "Spontan absagen",
     quantor: "INK",
     startwert: -9,
-    ink_faktor: -0.09,
+    ink_faktor: -0.009,
     ink_kategorie: "Vertrauen",
   },
   {
     positiv: "Unentschuldigt nicht kommen",
     quantor: "INK",
     startwert: -12,
-    ink_faktor: -0.12,
+    ink_faktor: -0.012,
     ink_kategorie: "Vertrauen",
   },
   {
@@ -114,14 +123,14 @@ export const negativeAction = [
     positiv: "Problem nicht helfen",
     quantor: "INK",
     startwert: -15,
-    ink_faktor: -0.15,
+    ink_faktor: -0.015,
     ink_kategorie: "Unterstützung",
   },
   {
     positiv: "Nachrichten ignorieren",
     quantor: "INK",
     startwert: -12,
-    ink_faktor: -0.12,
+    ink_faktor: -0.012,
     ink_kategorie: "Aufmerksamkeit",
   },
   {
@@ -135,21 +144,21 @@ export const negativeAction = [
     positiv: "Hinter Rücken reden",
     quantor: "INK",
     startwert: -18,
-    ink_faktor: -0.18,
-    ink_kategorie: "Vertauen",
+    ink_faktor: -0.018,
+    ink_kategorie: "Vertrauen",
   },
   {
     positiv: "Desinteressiert sein",
     quantor: "INK",
     startwert: -5,
-    ink_faktor: -0.05,
+    ink_faktor: -0.005,
     ink_kategorie: "Aufmerksamkeit",
   },
   {
     positiv: "Versprechen nicht einhalten",
     quantor: "INK",
     startwert: -18,
-    ink_faktor: -0.18,
+    ink_faktor: -0.018,
     ink_kategorie: "Vertrauen",
   },
 ];

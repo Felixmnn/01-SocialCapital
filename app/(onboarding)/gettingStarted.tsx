@@ -5,6 +5,7 @@ import IconScale from "@/components/iconScale";
 import Timer from "@/components/timer";
 import { theme } from "@/constants/theme";
 import { Avatar, Person, Relationship } from "@/constants/typesRelationship";
+import { useGlobalContext } from "@/context/GlobalProvider";
 import {
   gettingStartedButtonDisabled,
   gettingStartedButtonText,
@@ -56,6 +57,7 @@ const defaultSettingsThem: Relationship = {
 };
 
 const GettingStarted = () => {
+  const { setYourStats, setRelationships } = useGlobalContext();
   const { colorScheme } = useColorScheme();
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
   const current = theme[resolvedScheme];
@@ -163,7 +165,12 @@ const GettingStarted = () => {
               title="How can you meet"
               selectedValue={them[0].distance}
               onSelect={(value: number) =>
-                setThem([{ ...them[0], distance: value }])
+                setThem([
+                  {
+                    ...them[0],
+                    distance: value,
+                  },
+                ])
               }
             />
             <IconScale
@@ -189,6 +196,28 @@ const GettingStarted = () => {
           } else if (currentStep === "two") {
             setCurrentStep("three");
           } else {
+            setYourStats({ name: you.name, avatar: you.avatar });
+            setRelationships([
+              {
+                ...them[0],
+                points: {
+                  yourPoints: 50 + (them[0].strength - 1) * 20,
+                  theirPoints: 50 + (them[0].strength - 1) * 20,
+                },
+                ink: {
+                  your: {
+                    trust: 1 + (them[0].strength - 1) * 0.05,
+                    attention: 1 + (them[0].distance - 1) * 0.05,
+                    support: 1 + (them[0].strength - 1) * 0.05,
+                  },
+                  their: {
+                    trust: 1 + (them[0].strength - 1) * 0.05,
+                    attention: 1 + (them[0].distance - 1) * 0.05,
+                    support: 1 + (them[0].strength - 1) * 0.05,
+                  },
+                },
+              },
+            ]);
             router.push("/(start)/you");
           }
         }}

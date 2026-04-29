@@ -1,6 +1,9 @@
+import { theme } from "@/constants/theme";
 import { Avatar } from "@/constants/typesRelationship";
+import { LinearGradient } from "expo-linear-gradient";
+import { useColorScheme } from "nativewind";
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 
 const Selectable = ({
   iconName,
@@ -17,10 +20,26 @@ const Selectable = ({
   avatar?: Avatar;
   gradientType: "positive" | "negative";
 }) => {
+  const { colorScheme } = useColorScheme();
+  const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
+  const current = theme[resolvedScheme];
   return (
-    <View>
-      <Text>S</Text>
-    </View>
+    <TouchableOpacity
+      className="flex-row items-center justify-center px-1 rounded-xl my-1"
+      onPress={onPress}
+    >
+      <LinearGradient
+        colors={
+          gradientType === "positive" ? ["green", "blue"] : ["red", "orange"]
+        }
+        style={{
+          borderRadius: 15,
+        }}
+        className="flex-row items-center justify-center p-1 rounded-xl"
+      >
+        <Text className="text-base ml-2">{title}</Text>
+      </LinearGradient>
+    </TouchableOpacity>
   );
 };
 

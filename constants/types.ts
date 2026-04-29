@@ -5,7 +5,20 @@ export type WeekEntry = {
   completed: boolean;
 };
 
-export type SpecificBadgeId = "critical" | "balanced" | "positive";
+export type SpecificBadgeId =
+  | "critical"
+  | "balanced"
+  | "positive"
+  | "streak1"
+  | "streak2"
+  | "streak3"
+  | "streak4"
+  | "streak5"
+  | "streak6"
+  | "streak7"
+  | "streak8"
+  | "streak9"
+  | "streak10";
 
 export type Status = "critical" | "balanced" | "positive";
 

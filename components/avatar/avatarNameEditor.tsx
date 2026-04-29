@@ -3,7 +3,7 @@ import { Avatar } from "@/constants/typesRelationship";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useColorScheme } from "nativewind";
 import React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import CustomTextInput from "../customTextInput";
 import RenderAvatar from "./avatar";
 import AvatarEditor from "./avatarEditor";
@@ -17,6 +17,7 @@ const AvatarNameEditor = ({
   setAvatar,
   text,
   setText,
+  showTextWhenNotEditing = false,
 }: {
   you: { name: string; avatar: Avatar };
   setYou: (you: { name: string; avatar: Avatar }) => void;
@@ -26,7 +27,18 @@ const AvatarNameEditor = ({
   setAvatar: (avatar: Avatar) => void;
   text: string;
   setText: (text: string) => void;
+  showTextWhenNotEditing?: boolean;
 }) => {
+  const [isEditingName, setIsEditingName] = React.useState(
+    !showTextWhenNotEditing,
+  );
+
+  React.useEffect(() => {
+    if (!showTextWhenNotEditing) {
+      setIsEditingName(true);
+    }
+  }, [showTextWhenNotEditing]);
+
   const { colorScheme } = useColorScheme();
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
   const current = theme[resolvedScheme];
@@ -50,7 +62,33 @@ const AvatarNameEditor = ({
           />
         </TouchableOpacity>
       </View>
-      <CustomTextInput value={text} onChangeText={setText} />
+      {showTextWhenNotEditing && !isEditingName ? (
+        <TouchableOpacity onPress={() => setIsEditingName(true)}>
+          <Text
+            style={{
+              color: current.text,
+              fontSize: 20,
+              fontWeight: "700",
+              textAlign: "center",
+              minWidth: 200,
+              marginTop: 8,
+            }}
+          >
+            {text || "Name eingeben"}
+          </Text>
+        </TouchableOpacity>
+      ) : (
+        <CustomTextInput
+          value={text}
+          onChangeText={setText}
+          autoFocus={showTextWhenNotEditing}
+          onBlur={() => {
+            if (showTextWhenNotEditing) {
+              setIsEditingName(false);
+            }
+          }}
+        />
+      )}
       {editAvatar && <AvatarEditor avatar={avatar} setAvatar={setAvatar} />}
     </View>
   );
