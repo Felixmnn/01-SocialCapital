@@ -19,7 +19,7 @@ const ActionList: React.FC<ActionListProps> = ({ title, actions, onPress }) => {
             key={index}
             iconName="check"
             onPress={() => onPress(action)}
-            title={action.positiv}
+            title={action.actionId}
             gradientType={action.startwert > 0 ? "positive" : "negative"}
           />
         ))}

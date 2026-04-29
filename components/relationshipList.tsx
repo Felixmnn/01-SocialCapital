@@ -74,7 +74,7 @@ const Relation = ({
                     textAlign: "center",
                   }}
                 >
-                  {yourPoints}
+                  {Math.floor(yourPoints || 0)}
                 </Text>
                 <Text
                   style={{
@@ -94,7 +94,7 @@ const Relation = ({
                     textAlign: "center",
                   }}
                 >
-                  {theirPoints}
+                  {Math.floor(theirPoints || 0)}
                 </Text>
                 <Text
                   style={{
@@ -114,7 +114,9 @@ const Relation = ({
                     textAlign: "center",
                   }}
                 >
-                  {yourPoints && theirPoints ? yourPoints + theirPoints : 0}
+                  {yourPoints && theirPoints
+                    ? Math.floor(yourPoints + theirPoints)
+                    : 0}
                 </Text>
                 <Text
                   style={{

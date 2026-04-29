@@ -56,7 +56,7 @@ const PointOverview = ({
             height: 100,
           }}
         />
-        <Item iconName="users" label="They" points={theirPoints} />
+        <Item iconName="users" label="They" points={Math.floor(theirPoints)} />
         <View
           className=" bg-white"
           style={{
@@ -68,7 +68,7 @@ const PointOverview = ({
         <Item
           iconName="calculator"
           label="Total"
-          points={myPoints + theirPoints}
+          points={Math.floor(myPoints + theirPoints)}
         />
       </View>
     </LinearGradient>

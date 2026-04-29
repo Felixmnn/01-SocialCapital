@@ -37,14 +37,6 @@ const Relationship = () => {
     );
   }
 
-  const trustRatio =
-    relationship.ink.your.trust / Math.max(relationship.ink.their.trust, 1);
-  const attentionRatio =
-    relationship.ink.your.attention /
-    Math.max(relationship.ink.their.attention, 1);
-  const supportRatio =
-    relationship.ink.your.support / Math.max(relationship.ink.their.support, 1);
-
   const latestActions = [...relationship.actions]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 5);
@@ -83,9 +75,16 @@ const Relationship = () => {
           theirPoints={relationship.points.theirPoints}
         />
         <InkBadeCollection
-          trust={trustRatio}
-          attention={attentionRatio}
-          support={supportRatio}
+          title="Deine INK Werte"
+          trust={relationship.ink.your.trust}
+          attention={relationship.ink.your.attention}
+          support={relationship.ink.your.support}
+        />
+        <InkBadeCollection
+          title={`INK Werte von ${relationship.person.name}`}
+          trust={relationship.ink.their.trust}
+          attention={relationship.ink.their.attention}
+          support={relationship.ink.their.support}
         />
         <View
           className="mt-6 p-4 rounded-xl"

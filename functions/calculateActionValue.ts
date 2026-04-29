@@ -46,7 +46,7 @@ export function calculateNewScoreBasedOnINK(
   }
 
   const newScore = currentScore + actionValue * multiplier;
-
+  console.log("✅", newScore);
   return newScore;
 }
 

@@ -5,17 +5,12 @@ import Timer from "@/components/timer";
 import { Action, negativeAction, positiveAction } from "@/constants/constants";
 import { theme } from "@/constants/theme";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import {
-  calculateNewINKValue,
-  calculateNewScoreBasedOnBed,
-  calculateNewScoreBasedOnINK,
-  calculateNewScoreBasedOnQAN,
-} from "@/functions/calculateActionValue";
+import { calculateUpdatedRelationshipsAfterDailyTimers } from "@/functions/dailyEntryScoreCalculation";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useColorScheme } from "nativewind";
 import React from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 const DailyEntrys = () => {
   const { yourStats, relationships, setRelationships } = useGlobalContext();
@@ -50,7 +45,7 @@ const DailyEntrys = () => {
           entry.actor === whosTurn &&
           isSameDayLocal(new Date(entry.date), today),
       )
-      .map((entry) => actionPool.find((a) => a.positiv === entry.actionID))
+      .map((entry) => actionPool.find((a) => a.actionId === entry.actionID))
       .filter((action): action is Action => Boolean(action));
   }, [currentRelationship, whosTurn]);
 
@@ -86,9 +81,11 @@ const DailyEntrys = () => {
 
   React.useEffect(() => {
     if (isFinished) {
-      calculateAndUpdateScores();
+      setRelationships((prev) =>
+        calculateUpdatedRelationshipsAfterDailyTimers(prev),
+      );
     }
-  }, [isFinished]);
+  }, [isFinished, setRelationships]);
 
   function addActionToCurrentRelationship(action: Action) {
     setRelationships((prev) => {
@@ -101,7 +98,7 @@ const DailyEntrys = () => {
             ...relationship.actions,
             {
               actor: whosTurn,
-              actionID: action.positiv,
+              actionID: action.actionId,
               date: new Date().toISOString(),
             },
           ],
@@ -123,7 +120,7 @@ const DailyEntrys = () => {
             if (
               !removed &&
               entry.actor === whosTurn &&
-              entry.actionID === action.positiv
+              entry.actionID === action.actionId
             ) {
               removed = true;
               return false;
@@ -133,138 +130,6 @@ const DailyEntrys = () => {
         };
       });
     });
-  }
-
-  function calculateAndUpdateScores() {
-    setRelationships((prev) =>
-      prev.map((relationship) => {
-        const today = new Date();
-        const actionPool = [...positiveAction, ...negativeAction];
-
-        let newYourPoints = relationship.points.yourPoints;
-        let newTheirPoints = relationship.points.theirPoints;
-        let newYourInk = { ...relationship.ink.your };
-        let newTheirInk = { ...relationship.ink.their };
-
-        const todayActions = relationship.actions.filter((entry) =>
-          isSameDayLocal(new Date(entry.date), today),
-        );
-
-        todayActions.forEach((entry) => {
-          const actionDetails = actionPool.find(
-            (a) => a.positiv === entry.actionID,
-          );
-          if (!actionDetails) return;
-
-          const { startwert, quantor, ink_kategorie, ink_faktor } =
-            actionDetails;
-          const isYou = entry.actor === "you";
-
-          // Neue Points berechnen
-          if (quantor === "INK") {
-            const inkey =
-              (ink_kategorie?.toLowerCase() as
-                | "trust"
-                | "attention"
-                | "support") || "trust";
-            const currentInk = isYou ? newYourInk[inkey] : newTheirInk[inkey];
-
-            const newScore = calculateNewScoreBasedOnINK(
-              isYou ? newYourPoints : newTheirPoints,
-              currentInk,
-              startwert,
-            );
-            if (isYou) {
-              newYourPoints = newScore;
-            } else {
-              newTheirPoints = newScore;
-            }
-          } else if (quantor === "BED") {
-            const lastAction = relationship.actions
-              .filter(
-                (a) =>
-                  a.actor === entry.actor &&
-                  a.actionID === entry.actionID &&
-                  new Date(a.date).getTime() < new Date(entry.date).getTime(),
-              )
-              .sort(
-                (a, b) =>
-                  new Date(b.date).getTime() - new Date(a.date).getTime(),
-              )[0];
-
-            const lastDate = lastAction
-              ? new Date(lastAction.date)
-              : new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
-
-            const newScore = calculateNewScoreBasedOnBed(
-              isYou ? newYourPoints : newTheirPoints,
-              lastDate,
-              startwert,
-            );
-            if (isYou) {
-              newYourPoints = newScore;
-            } else {
-              newTheirPoints = newScore;
-            }
-          } else if (quantor === "QAN" || quantor === "BED/QAN") {
-            const thirtyDaysAgo = new Date(
-              today.getTime() - 30 * 24 * 60 * 60 * 1000,
-            );
-            const last30Days = relationship.actions
-              .filter(
-                (a) =>
-                  a.actor === entry.actor &&
-                  a.actionID === entry.actionID &&
-                  new Date(a.date) >= thirtyDaysAgo,
-              )
-              .map((a) => new Date(a.date));
-
-            const newScore = calculateNewScoreBasedOnQAN(
-              isYou ? newYourPoints : newTheirPoints,
-              startwert,
-              last30Days,
-            );
-            if (isYou) {
-              newYourPoints = newScore;
-            } else {
-              newTheirPoints = newScore;
-            }
-          } else {
-            // quantor === null
-            if (isYou) {
-              newYourPoints += startwert;
-            } else {
-              newTheirPoints += startwert;
-            }
-          }
-
-          // Neue INK Werte berechnen
-          if (ink_kategorie && ink_faktor) {
-            const inkey = ink_kategorie.toLowerCase() as
-              | "trust"
-              | "attention"
-              | "support";
-            if (isYou) {
-              newYourInk[inkey] = calculateNewINKValue(
-                newYourInk[inkey],
-                ink_faktor,
-              );
-            } else {
-              newTheirInk[inkey] = calculateNewINKValue(
-                newTheirInk[inkey],
-                ink_faktor,
-              );
-            }
-          }
-        });
-
-        return {
-          ...relationship,
-          points: { yourPoints: newYourPoints, theirPoints: newTheirPoints },
-          ink: { your: newYourInk, their: newTheirInk },
-        };
-      }),
-    );
   }
 
   function nextTurn({ whereTo }: { whereTo: "left" | "right" }) {
@@ -345,6 +210,12 @@ const DailyEntrys = () => {
             style={{ width: "100%" }}
             contentContainerStyle={{ paddingBottom: 100 }}
           >
+            <TouchableOpacity
+              className="bg-green-500 px-4 py-2 rounded-full items-center justify-center mb-4"
+              onPress={() => setIsFinished(true)}
+            >
+              <Text>Finish</Text>
+            </TouchableOpacity>
             <ActionList
               title={
                 whosTurn === "you"
