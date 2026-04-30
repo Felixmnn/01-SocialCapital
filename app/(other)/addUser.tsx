@@ -150,6 +150,7 @@ const AddUser = () => {
                 name={newRelationship.person.name || "Them"}
               />
             </View>
+            {/*
             <IconScale
               iconScale={iconScaleMeet}
               title="How can you meet"
@@ -158,6 +159,7 @@ const AddUser = () => {
                 setNewRelationship((prev) => ({ ...prev, distance: value }))
               }
             />
+            */}
             <IconScale
               iconScale={iconScaleStrength}
               title="How strong is your relationship"
@@ -190,12 +192,12 @@ const AddUser = () => {
               ink: {
                 your: {
                   trust: 1 + (newRelationship.strength - 1) * 0.05,
-                  attention: 1 + (newRelationship.distance - 1) * 0.05,
+                  attention: 1 + (newRelationship.strength - 1) * 0.05,
                   support: 1 + (newRelationship.strength - 1) * 0.05,
                 },
                 their: {
                   trust: 1 + (newRelationship.strength - 1) * 0.05,
-                  attention: 1 + (newRelationship.distance - 1) * 0.05,
+                  attention: 1 + (newRelationship.strength - 1) * 0.05,
                   support: 1 + (newRelationship.strength - 1) * 0.05,
                 },
               },

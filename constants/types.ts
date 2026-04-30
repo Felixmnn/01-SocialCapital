@@ -38,4 +38,6 @@ export type GeneralSettings = {
   notifications: boolean;
   streakDuration: number; // in Tagen
   weekEntries: WeekEntry[];
+  addsWatchedAt: string[];
+  lastOpenDate?: string; // YYYY-MM-DD
 };

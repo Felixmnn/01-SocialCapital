@@ -1,11 +1,12 @@
 import { theme } from "@/constants/theme";
 import { Avatar, Relationship } from "@/constants/typesRelationship";
+import { returnScaleIcon } from "@/functions/general";
 import { calculateBalance } from "@/functions/relationshipStats";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useColorScheme } from "nativewind";
 import React from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import RenderAvatar from "./avatar/avatar";
 
 const Relation = ({
@@ -54,9 +55,7 @@ const Relation = ({
         <View className="flex-1 flex-row justify-start items-center  ">
           <RenderAvatar avatar={avatar} selected={false} size={"small"} />
           <View className="flex-1 justify-start items-start p-2">
-            <Text
-              style={{ color: current.text, fontSize: 18, fontWeight: "bold" }}
-            >
+            <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
               {name}
             </Text>
             <View
@@ -69,16 +68,17 @@ const Relation = ({
               <View className="flex-1 ">
                 <Text
                   style={{
-                    color: current.text,
+                    color: "white",
                     fontSize: 14,
                     textAlign: "center",
+                    fontWeight: "bold",
                   }}
                 >
                   {Math.floor(yourPoints || 0)}
                 </Text>
                 <Text
                   style={{
-                    color: current.text,
+                    color: "white",
                     fontSize: 14,
                     textAlign: "center",
                   }}
@@ -89,16 +89,17 @@ const Relation = ({
               <View className="flex-1 ">
                 <Text
                   style={{
-                    color: current.text,
+                    color: "white",
                     fontSize: 14,
                     textAlign: "center",
+                    fontWeight: "bold",
                   }}
                 >
                   {Math.floor(theirPoints || 0)}
                 </Text>
                 <Text
                   style={{
-                    color: current.text,
+                    color: "white",
                     fontSize: 14,
                     textAlign: "center",
                   }}
@@ -109,9 +110,10 @@ const Relation = ({
               <View className="flex-1 ">
                 <Text
                   style={{
-                    color: current.text,
+                    color: "white",
                     fontSize: 14,
                     textAlign: "center",
+                    fontWeight: "bold",
                   }}
                 >
                   {yourPoints && theirPoints
@@ -120,9 +122,10 @@ const Relation = ({
                 </Text>
                 <Text
                   style={{
-                    color: current.text,
+                    color: "white",
                     fontSize: 14,
                     textAlign: "center",
+                    fontWeight: "bold",
                   }}
                 >
                   Total
@@ -138,7 +141,11 @@ const Relation = ({
             height: 60,
           }}
         >
-          <FontAwesome5 name="balance-scale" size={39} color={current.text} />
+          <FontAwesome5
+            name={returnScaleIcon(yourPoints || 0, theirPoints || 0)}
+            size={39}
+            color={"white"}
+          />
         </View>
       </LinearGradient>
     </Pressable>
@@ -156,6 +163,7 @@ const RelationshipList = ({
 }) => {
   const [sortRelationShips, setSortRelationShips] =
     React.useState<boolean>(false);
+  const [details, setDetails] = React.useState<boolean>(true);
   return (
     <View className="w-full px-4 mt-5">
       <View className="flex-row w-full justify-between items-start px-4">
@@ -172,25 +180,27 @@ const RelationshipList = ({
           onPress={onPressAddUser}
         />
       </View>
-      {(sortRelationShips
-        ? [...relationships].sort(
-            (a, b) => b.points.yourPoints - a.points.yourPoints,
-          )
-        : relationships
-      ).map((relationship, index) => (
-        <Relation
-          name={relationship.person.name}
-          avatar={relationship.person.avatar}
-          yourPoints={relationship.points.yourPoints}
-          theirPoints={relationship.points.theirPoints}
-          status={calculateBalance(
-            relationship.points.yourPoints,
-            relationship.points.theirPoints,
-          )}
-          onPress={() => onPressRelationship?.(relationship, index)}
-          key={index}
-        />
-      ))}
+      <ScrollView className=" w-full">
+        {(sortRelationShips
+          ? [...relationships].sort(
+              (a, b) => b.points.yourPoints - a.points.yourPoints,
+            )
+          : relationships
+        ).map((relationship, index) => (
+          <Relation
+            name={relationship.person.name}
+            avatar={relationship.person.avatar}
+            yourPoints={relationship.points.yourPoints}
+            theirPoints={relationship.points.theirPoints}
+            status={calculateBalance(
+              relationship.points.yourPoints,
+              relationship.points.theirPoints,
+            )}
+            onPress={() => onPressRelationship?.(relationship, index)}
+            key={index}
+          />
+        ))}
+      </ScrollView>
     </View>
   );
 };

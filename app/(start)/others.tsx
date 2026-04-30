@@ -4,6 +4,10 @@ import RelationshipList from "@/components/relationshipList";
 import { theme } from "@/constants/theme";
 import { Avatar, Relationship } from "@/constants/typesRelationship";
 import { useGlobalContext } from "@/context/GlobalProvider";
+import {
+  calculateTheirPoints,
+  calculateYourPoints,
+} from "@/functions/relationshipStats";
 import { router } from "expo-router";
 import { useColorScheme } from "nativewind";
 import React from "react";
@@ -14,6 +18,16 @@ const Others = () => {
   const { colorScheme } = useColorScheme();
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
   const current = theme[resolvedScheme];
+  function calculateRelationshipStatus(): "positive" | "critical" | "balanced" {
+    const theirPoints = calculateTheirPoints(relationships);
+    const yourPoints = calculateYourPoints(relationships);
+    //wenn deine punkte min 20% höher sind als die ihrer, dann positiv
+    if (yourPoints > theirPoints * 1.2) return "positive";
+    //wenn ihre punkte min 20% höher sind als deine, dann kritisch
+    if (theirPoints > yourPoints * 1.2) return "critical";
+    //ansonsten balanced
+    return "balanced";
+  }
 
   const exampleAvatar: Avatar = {
     skinColor: "light",
@@ -87,7 +101,7 @@ const Others = () => {
       }}
     >
       <GradientToBackground
-        state="critical"
+        state={calculateRelationshipStatus()}
         visibleComponents="cog"
         onPressCog={() => router.push("/settings")}
       >

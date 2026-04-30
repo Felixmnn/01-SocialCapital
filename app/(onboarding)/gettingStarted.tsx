@@ -160,6 +160,7 @@ const GettingStarted = () => {
                 name={them[0].person.name || "Them"}
               />
             </View>
+            {/*
             <IconScale
               iconScale={iconScaleMeet}
               title="How can you meet"
@@ -172,7 +173,7 @@ const GettingStarted = () => {
                   },
                 ])
               }
-            />
+            />*/}
             <IconScale
               iconScale={iconScaleStrength}
               title="How strong is your relationship"
@@ -207,12 +208,12 @@ const GettingStarted = () => {
                 ink: {
                   your: {
                     trust: 1 + (them[0].strength - 1) * 0.05,
-                    attention: 1 + (them[0].distance - 1) * 0.05,
+                    attention: 1 + (them[0].strength - 1) * 0.05,
                     support: 1 + (them[0].strength - 1) * 0.05,
                   },
                   their: {
                     trust: 1 + (them[0].strength - 1) * 0.05,
-                    attention: 1 + (them[0].distance - 1) * 0.05,
+                    attention: 1 + (them[0].strength - 1) * 0.05,
                     support: 1 + (them[0].strength - 1) * 0.05,
                   },
                 },

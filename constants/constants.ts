@@ -152,3 +152,49 @@ export const negativeAction: Action[] = [
     ink_kategorie: "trust",
   },
 ];
+
+export const recoveryFactorsDaily = {
+  trust: 0.02,
+  attention: 0.03,
+  support: 0.025,
+  relationshipPoints: -1,
+};
+
+export function calculateNewINKValue(
+  currentValue: number,
+  lastUpdateDate: Date,
+  category: "trust" | "attention" | "support" = "trust",
+) {
+  //Anzahl der Tage seit dem letzten Update berechnen
+  const today = new Date();
+  const timeDiff = today.getTime() - lastUpdateDate.getTime();
+  const amountOfDays = Math.floor(timeDiff / (1000 * 3600 * 24));
+
+  if (amountOfDays <= 0) {
+    return currentValue;
+  }
+  const recoveryFactor = recoveryFactorsDaily[category];
+
+  if (currentValue > 1) {
+    return Math.max(1, currentValue - amountOfDays * recoveryFactor);
+  } else if (currentValue < 1) {
+    return Math.min(1, currentValue + amountOfDays * recoveryFactor);
+  } else {
+    return currentValue;
+  }
+}
+
+export function calculateNewPoints(
+  currentPoints: number,
+  lastUpdateDate: Date,
+) {
+  const today = new Date();
+  const timeDiff = today.getTime() - lastUpdateDate.getTime();
+  const amountOfDays = Math.floor(timeDiff / (1000 * 3600 * 24));
+  if (amountOfDays <= 0) {
+    return currentPoints;
+  }
+  const nextPoints =
+    currentPoints + amountOfDays * recoveryFactorsDaily.relationshipPoints;
+  return Math.min(currentPoints, nextPoints);
+}

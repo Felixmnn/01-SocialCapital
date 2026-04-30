@@ -53,7 +53,9 @@ export default function Layout() {
                 <FontAwesome5
                   name="user"
                   size={30}
-                  color={focused ? "white" : "#602568"}
+                  color={
+                    focused ? "white" : currentTheme.balancedToBackground[1]
+                  }
                   solid={true}
                 />
               </View>
@@ -70,7 +72,9 @@ export default function Layout() {
                 <FontAwesome5
                   name="users"
                   size={30}
-                  color={focused ? "white" : "#602568"}
+                  color={
+                    focused ? "white" : currentTheme.balancedToBackground[1]
+                  }
                   solid={true}
                 />
               </View>

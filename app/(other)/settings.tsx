@@ -19,6 +19,7 @@ const DEFAULT_GENERAL_SETTINGS: GeneralSettings = {
   notifications: false,
   streakDuration: 0,
   weekEntries: [],
+  addsWatchedAt: [],
 };
 
 const settingsRowStyle = {
@@ -162,7 +163,7 @@ const Settings = () => {
           <CustomButton title="Änderungen speichern" onPress={onSave} />
         )}
 
-        <BadgeCollection />
+        <BadgeCollection badges={generalSettings.patches} />
 
         <View style={{ width: "100%", gap: 8 }}>
           <View

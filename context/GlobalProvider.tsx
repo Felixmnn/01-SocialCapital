@@ -1,4 +1,8 @@
 import {
+  calculateNewINKValue,
+  calculateNewPoints,
+} from "@/constants/constants";
+import {
   GeneralSettings,
   GlobalProviderProps,
   SpecificBadgeId,
@@ -7,6 +11,135 @@ import {
 import { Avatar, Relationship } from "@/constants/typesRelationship";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useEffect, useState } from "react";
+
+function getLocalDateString(date: Date): string {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function generateWeekEntries(today: Date): WeekEntry[] {
+  const dayOfWeek = today.getDay();
+  return Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(today);
+    d.setDate(today.getDate() - dayOfWeek + i);
+    return { date: d.toISOString(), completed: i === dayOfWeek };
+  });
+}
+
+function updateStreak(settings: GeneralSettings): GeneralSettings {
+  const today = new Date();
+  const todayStr = getLocalDateString(today);
+  const lastOpen = settings.lastOpenDate;
+
+  let newStreak = settings.streakDuration;
+  if (!lastOpen) {
+    newStreak = 1;
+  } else if (lastOpen !== todayStr) {
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    newStreak =
+      getLocalDateString(yesterday) === lastOpen
+        ? settings.streakDuration + 1
+        : 1;
+  }
+
+  const dayOfWeek = today.getDay();
+  const todayInWeek = settings.weekEntries.some(
+    (e) => getLocalDateString(new Date(e.date)) === todayStr,
+  );
+
+  const weekEntries =
+    todayInWeek && settings.weekEntries.length === 7
+      ? settings.weekEntries.map((e, i) =>
+          i === dayOfWeek ? { ...e, completed: true } : e,
+        )
+      : generateWeekEntries(today);
+
+  return {
+    ...settings,
+    streakDuration: newStreak,
+    weekEntries,
+    lastOpenDate: todayStr,
+  };
+}
+
+function normalizeGeneralSettings(
+  settings: Partial<GeneralSettings>,
+): GeneralSettings {
+  return {
+    theme: settings.theme ?? "light",
+    patches: settings.patches ?? [],
+    sync: settings.sync ?? false,
+    notifications: settings.notifications ?? false,
+    streakDuration: settings.streakDuration ?? 0,
+    weekEntries: settings.weekEntries ?? [],
+    addsWatchedAt: settings.addsWatchedAt ?? [],
+    lastOpenDate: settings.lastOpenDate,
+  };
+}
+
+function updateRelationshipsDailyRecovery(
+  currentRelationships: Relationship[],
+  lastOpenDate?: string,
+): Relationship[] {
+  if (!lastOpenDate) {
+    return currentRelationships;
+  }
+
+  const referenceDate = new Date(`${lastOpenDate}T00:00:00`);
+  if (Number.isNaN(referenceDate.getTime())) {
+    return currentRelationships;
+  }
+
+  return currentRelationships.map((relationship) => ({
+    ...relationship,
+    points: {
+      yourPoints: calculateNewPoints(
+        relationship.points.yourPoints,
+        referenceDate,
+      ),
+      theirPoints: calculateNewPoints(
+        relationship.points.theirPoints,
+        referenceDate,
+      ),
+    },
+    ink: {
+      your: {
+        trust: calculateNewINKValue(
+          relationship.ink.your.trust,
+          referenceDate,
+          "trust",
+        ),
+        attention: calculateNewINKValue(
+          relationship.ink.your.attention,
+          referenceDate,
+          "attention",
+        ),
+        support: calculateNewINKValue(
+          relationship.ink.your.support,
+          referenceDate,
+          "support",
+        ),
+      },
+      their: {
+        trust: calculateNewINKValue(
+          relationship.ink.their.trust,
+          referenceDate,
+          "trust",
+        ),
+        attention: calculateNewINKValue(
+          relationship.ink.their.attention,
+          referenceDate,
+          "attention",
+        ),
+        support: calculateNewINKValue(
+          relationship.ink.their.support,
+          referenceDate,
+          "support",
+        ),
+      },
+    },
+  }));
+}
 
 type GlobalContextType = {
   yourStats: {
@@ -47,6 +180,7 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
     notifications: false,
     streakDuration: 0,
     weekEntries: [] as WeekEntry[],
+    addsWatchedAt: [],
   });
 
   const [loading, setLoading] = useState(true);
@@ -80,19 +214,32 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
           );
         }
         if (storedRelationships) {
-          setRelationships(JSON.parse(storedRelationships));
+          const parsedRelationships: Relationship[] =
+            JSON.parse(storedRelationships);
+          const parsedSettingsForRecovery: GeneralSettings =
+            storedGeneralSettings
+              ? normalizeGeneralSettings(JSON.parse(storedGeneralSettings))
+              : generalSettings;
+          const updatedRelationships = updateRelationshipsDailyRecovery(
+            parsedRelationships,
+            parsedSettingsForRecovery.lastOpenDate,
+          );
+
+          setRelationships(updatedRelationships);
           console.log(
             "Loaded relationships from AsyncStorage:",
-            JSON.parse(storedRelationships),
+            updatedRelationships,
           );
         }
-        if (storedGeneralSettings) {
-          setGeneralSettings(JSON.parse(storedGeneralSettings));
-          console.log(
-            "Loaded generalSettings from AsyncStorage:",
-            JSON.parse(storedGeneralSettings),
-          );
-        }
+        const parsedSettings: GeneralSettings = storedGeneralSettings
+          ? normalizeGeneralSettings(JSON.parse(storedGeneralSettings))
+          : generalSettings;
+        const updatedSettings = updateStreak(parsedSettings);
+        setGeneralSettings(updatedSettings);
+        console.log(
+          "Loaded generalSettings from AsyncStorage:",
+          updatedSettings,
+        );
       } catch (error) {
         console.error("Error loading data from AsyncStorage:", error);
       } finally {
