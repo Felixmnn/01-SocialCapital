@@ -30,14 +30,18 @@ const Selectable = ({
     >
       <LinearGradient
         colors={
-          gradientType === "positive" ? ["green", "blue"] : ["red", "orange"]
+          gradientType === "positive"
+            ? [current.positive[0], current.positive[1]]
+            : [current.critical[0], current.critical[1]]
         }
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
         style={{
           borderRadius: 15,
         }}
         className="flex-row items-center justify-center p-1 rounded-xl"
       >
-        <Text className="text-base ml-2">{title}</Text>
+        <Text className="text-gray-700 font-bold ml-2">{title}</Text>
       </LinearGradient>
     </TouchableOpacity>
   );

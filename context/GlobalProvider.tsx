@@ -77,6 +77,20 @@ function normalizeGeneralSettings(
   };
 }
 
+type LegacyAvatar = Omit<Avatar, "hairType"> & {
+  hairType?: Avatar["hairType"] | "none";
+};
+
+function normalizeAvatar(avatar: LegacyAvatar): Avatar {
+  const normalizedHairType =
+    avatar.hairType === "none" ? "type0" : (avatar.hairType ?? "type1");
+
+  return {
+    ...avatar,
+    hairType: normalizedHairType,
+  };
+}
+
 function updateRelationshipsDailyRecovery(
   currentRelationships: Relationship[],
   lastOpenDate?: string,
@@ -207,25 +221,58 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
         const storedGeneralSettings =
           await AsyncStorage.getItem("generalSettings");
         if (storedYourStats) {
-          setYourStats(JSON.parse(storedYourStats));
+          const parsedYourStats = JSON.parse(storedYourStats) as {
+            name: string;
+            avatar: Avatar;
+          };
+          const needsYourStatsMigration = !parsedYourStats.avatar?.hairType;
+          const normalizedYourStats = {
+            ...parsedYourStats,
+            avatar: normalizeAvatar(parsedYourStats.avatar),
+          };
+          setYourStats(normalizedYourStats);
+          if (needsYourStatsMigration) {
+            await AsyncStorage.setItem(
+              "yourStats",
+              JSON.stringify(normalizedYourStats),
+            );
+          }
           console.log(
             "Loaded yourStats from AsyncStorage:",
-            JSON.parse(storedYourStats),
+            normalizedYourStats,
           );
         }
         if (storedRelationships) {
           const parsedRelationships: Relationship[] =
             JSON.parse(storedRelationships);
+          const needsRelationshipsMigration = parsedRelationships.some(
+            (relationship) => !relationship.person.avatar?.hairType,
+          );
+          const normalizedRelationships = parsedRelationships.map(
+            (relationship) => ({
+              ...relationship,
+              person: {
+                ...relationship.person,
+                avatar: normalizeAvatar(relationship.person.avatar),
+              },
+            }),
+          );
           const parsedSettingsForRecovery: GeneralSettings =
             storedGeneralSettings
               ? normalizeGeneralSettings(JSON.parse(storedGeneralSettings))
               : generalSettings;
           const updatedRelationships = updateRelationshipsDailyRecovery(
-            parsedRelationships,
+            normalizedRelationships,
             parsedSettingsForRecovery.lastOpenDate,
           );
 
           setRelationships(updatedRelationships);
+          if (needsRelationshipsMigration) {
+            await AsyncStorage.setItem(
+              "relationships",
+              JSON.stringify(updatedRelationships),
+            );
+          }
           console.log(
             "Loaded relationships from AsyncStorage:",
             updatedRelationships,

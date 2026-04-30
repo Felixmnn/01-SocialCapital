@@ -85,8 +85,8 @@ export const negativeAction: Action[] = [
     actionId: "Keine Zeit sagen",
     quantor: "QAN",
     startwert: -6,
-    ink_faktor: null,
-    ink_kategorie: null,
+    ink_faktor: -0.06,
+    ink_kategorie: "attention",
   },
   {
     actionId: "Spontan absagen",
@@ -106,8 +106,8 @@ export const negativeAction: Action[] = [
     actionId: "Sich stark verspäten",
     quantor: "QAN",
     startwert: -7,
-    ink_faktor: null,
-    ink_kategorie: null,
+    ink_faktor: -0.07,
+    ink_kategorie: "trust",
   },
   {
     actionId: "Problem nicht helfen",
@@ -127,8 +127,8 @@ export const negativeAction: Action[] = [
     actionId: "Unfreundlich antworten",
     quantor: "QAN",
     startwert: -8,
-    ink_faktor: null,
-    ink_kategorie: null,
+    ink_faktor: -0.08,
+    ink_kategorie: "support",
   },
   {
     actionId: "Hinter Rücken reden",

@@ -24,6 +24,7 @@ const defaultAvatar: Avatar = {
   beardColor: "black",
   selectedCharacter: "character1",
   backgroundColor: "blue",
+  hairType: "type1",
 };
 
 const defaultYou = {

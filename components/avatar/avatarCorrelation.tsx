@@ -1,6 +1,8 @@
+import { theme } from "@/constants/theme";
 import { yourStats } from "@/constants/types";
 import { Relationship } from "@/constants/typesRelationship";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useColorScheme } from "nativewind";
 import React from "react";
 import { View } from "react-native";
 import RenderAvatar from "./avatar";
@@ -14,8 +16,11 @@ const AvatarCorrelation = ({
   them: Relationship;
   selected: "you" | "them" | "none";
 }) => {
+  const { colorScheme } = useColorScheme();
+  const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
+  const current = theme[resolvedScheme];
   return (
-    <View className="flex-row">
+    <View className="flex-row mt-4">
       <RenderAvatar
         avatar={you.avatar}
         size={"medium"}
@@ -25,13 +30,13 @@ const AvatarCorrelation = ({
         <FontAwesome5
           name="arrow-right"
           size={24}
-          color={selected === "you" ? "blue" : "black"}
+          color={selected === "you" ? current.basic : current.text}
           style={{ marginHorizontal: 10 }}
         />
         <FontAwesome5
           name="arrow-left"
           size={24}
-          color={selected === "them" ? "blue" : "black"}
+          color={selected === "them" ? current.basic : current.text}
           style={{ marginHorizontal: 10 }}
         />
       </View>

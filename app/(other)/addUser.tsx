@@ -2,7 +2,6 @@ import AvatarNameEditor from "@/components/avatar/avatarNameEditor";
 import AvatarWithName from "@/components/avatar/avatarWithName";
 import CustomButton from "@/components/customButton";
 import IconScale from "@/components/iconScale";
-import Timer from "@/components/timer";
 import { theme } from "@/constants/theme";
 import { Avatar, Relationship } from "@/constants/typesRelationship";
 import { useGlobalContext } from "@/context/GlobalProvider";
@@ -20,6 +19,7 @@ const defaultAvatar: Avatar = {
   beardColor: "black",
   selectedCharacter: "character1",
   backgroundColor: "blue",
+  hairType: "type1",
 };
 
 const defaultRelationship: Relationship = {
@@ -106,7 +106,7 @@ const AddUser = () => {
           }}
           style={{ marginRight: 20 }}
         />
-        <Timer remainingPercentage={currentStep === "one" ? 50 : 100} />
+        <View className="flex-1" />
       </View>
 
       <View className="items-center justify-center">

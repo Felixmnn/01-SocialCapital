@@ -92,6 +92,30 @@ const Relationship = () => {
   const yourStatusMeta = getStatusMeta(yourStatus);
   const theirStatusMeta = getStatusMeta(theirStatus);
 
+  function getPersonalizedStatusDescription(
+    status: "positive" | "critical" | "balanced",
+    targetName: string,
+    isYou: boolean,
+  ) {
+    if (isYou) {
+      if (status === "positive") {
+        return "Du bist in dieser Beziehung aktuell eher ein Geber: Du investierst mehr in die Beziehung, als du zurueckbekommst.";
+      }
+      if (status === "critical") {
+        return "Du bist in dieser Beziehung aktuell eher ein Nehmer: Du bekommst mehr aus der Beziehung, als du selbst einbringst.";
+      }
+      return "Du bist in dieser Beziehung aktuell ausgeglichen: Geben und Nehmen sind bei dir ungefaehr gleich verteilt.";
+    }
+
+    if (status === "positive") {
+      return `${targetName} ist in dieser Beziehung aktuell eher ein Geber: Die Person investiert mehr in die Beziehung, als sie zurueckbekommt.`;
+    }
+    if (status === "critical") {
+      return `${targetName} ist in dieser Beziehung aktuell eher ein Nehmer: Die Person bekommt mehr aus der Beziehung, als sie selbst einbringt.`;
+    }
+    return `${targetName} ist in dieser Beziehung aktuell ausgeglichen: Geben und Nehmen sind bei der Person ungefaehr gleich verteilt.`;
+  }
+
   const modalStatus = selectedStatusTarget === "you" ? yourStatus : theirStatus;
   const modalMeta = getStatusMeta(modalStatus);
   const modalName =
@@ -100,16 +124,12 @@ const Relationship = () => {
       : relationship.person.name;
   const modalDescription =
     selectedStatusTarget === "you"
-      ? yourStatus === "positive"
-        ? "Du gibst in dieser Beziehung aktuell mehr als du nimmst."
-        : yourStatus === "critical"
-          ? "Du nimmst in dieser Beziehung aktuell mehr als du gibst."
-          : "Bei dir sind Geben und Nehmen in dieser Beziehung gerade ausgeglichen."
-      : theirStatus === "positive"
-        ? `${relationship.person.name} gibt in dieser Beziehung aktuell mehr als die Person nimmt.`
-        : theirStatus === "critical"
-          ? `${relationship.person.name} nimmt in dieser Beziehung aktuell mehr als die Person gibt.`
-          : `Bei ${relationship.person.name} sind Geben und Nehmen in dieser Beziehung gerade ausgeglichen.`;
+      ? getPersonalizedStatusDescription(yourStatus, modalName, true)
+      : getPersonalizedStatusDescription(
+          theirStatus,
+          relationship.person.name,
+          false,
+        );
 
   return (
     <View
@@ -274,6 +294,8 @@ const Relationship = () => {
               trust={relationship.ink.your.trust}
               attention={relationship.ink.your.attention}
               support={relationship.ink.your.support}
+              recipent="youThem"
+              nameOtherPerson={relationship.person.name + " "}
             />
           </View>
           <View style={{ width: 60, marginLeft: 14 }} />
@@ -282,6 +304,8 @@ const Relationship = () => {
               trust={relationship.ink.their.trust}
               attention={relationship.ink.their.attention}
               support={relationship.ink.their.support}
+              recipent="themYou"
+              nameOtherPerson={relationship.person.name + " "}
             />
           </View>
         </View>
@@ -313,7 +337,7 @@ const Relationship = () => {
                   <Text
                     style={{ color: current.text, opacity: 0.7, fontSize: 12 }}
                   >
-                    {new Date(entry.date).toLocaleString("de-DE")}
+                    {new Date(entry.date).toLocaleDateString("de-DE")}
                   </Text>
                 </View>
               );

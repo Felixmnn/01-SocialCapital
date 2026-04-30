@@ -36,6 +36,7 @@ const Others = () => {
     beardColor: "black",
     selectedCharacter: "character1",
     backgroundColor: "blue",
+    hairType: "type1",
   };
 
   const theirStats: Relationship[] = [
@@ -110,7 +111,7 @@ const Others = () => {
             avatar={yourStats.avatar}
             name={yourStats.name}
             points={relationships.reduce((acc, relationship) => {
-              return acc + relationship.points.yourPoints;
+              return Math.floor(acc + relationship.points.yourPoints);
             }, 0)}
           />
         )}

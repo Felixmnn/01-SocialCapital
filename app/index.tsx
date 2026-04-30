@@ -18,6 +18,7 @@ export default function Index() {
     beardType: "none",
     beardColor: "black",
     selectedCharacter: "character1",
+    hairType: "type1",
     backgroundColor: "blue",
   });
 

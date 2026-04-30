@@ -59,14 +59,13 @@ const You = () => {
       ? "Geber"
       : relationshipStatus === "critical"
         ? "Nehmer"
-        : "Balancierer";
+        : "Ausgeglichen";
   const statusDescription =
     relationshipStatus === "positive"
-      ? "Du gibst aktuell mehr als du nimmst."
+      ? "Du bist aktuell eher ein Geber: Du investierst insgesamt mehr in deine Beziehungen, als du zurückbekommst."
       : relationshipStatus === "critical"
-        ? "Du nimmst aktuell mehr als du gibst."
-        : "Geben und Nehmen sind bei dir gerade ausgeglichen.";
-
+        ? "Du bist aktuell eher ein Nehmer: Du bekommst insgesamt mehr aus deinen Beziehungen, als du selbst einbringst."
+        : "Du bist aktuell ausgeglichen: Geber und Nehmer sind bei dir ungefähr gleich verteilt.";
   return (
     <View
       style={{
@@ -186,14 +185,15 @@ const You = () => {
           duration={generalSettings.streakDuration}
         />
         <PointOverview
-          myPoints={calculateYourPoints(relationships)}
-          theirPoints={calculateTheirPoints(relationships)}
+          myPoints={Math.floor(calculateYourPoints(relationships))}
+          theirPoints={Math.floor(calculateTheirPoints(relationships))}
         />
         <InkBadeCollection
           horizontal
           trust={calculateAverageTrust(relationships)}
           attention={calculateAverageAttention(relationships)}
           support={calculateAverageSupport(relationships)}
+          recipent="youTotal"
         />
       </View>
       <Text style={{ color: current.text }}>Y</Text>

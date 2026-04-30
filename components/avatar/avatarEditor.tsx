@@ -31,7 +31,16 @@ const CHARACTERS: Avatar["selectedCharacter"][] = [
   "character4",
   "character5",
   "character6",
-  "character7",
+];
+
+const HAIRTYPES: Avatar["hairType"][] = [
+  "type0",
+  "type1",
+  "type2",
+  "type3",
+  "type4",
+  "type5",
+  "type6",
 ];
 
 const BACKGROUND_COLORS: Avatar["backgroundColor"][] = [
@@ -165,6 +174,17 @@ const AvatarEditor = ({
             }
           />
         )}
+      <RowControl
+        label="Hair Type"
+        value={avatar.hairType}
+        onPrevious={() =>
+          updateField("hairType", cycleValue(HAIRTYPES, avatar.hairType, -1))
+        }
+        onNext={() =>
+          updateField("hairType", cycleValue(HAIRTYPES, avatar.hairType, 1))
+        }
+      />
+
       <RowControl
         label="Background"
         value={avatar.backgroundColor}

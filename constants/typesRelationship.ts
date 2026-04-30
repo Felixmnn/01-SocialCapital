@@ -11,6 +11,7 @@ export type Avatar = {
     | "character5"
     | "character6"
     | "character7";
+  hairType: "type0" | "type1" | "type2" | "type3" | "type4" | "type5" | "type6";
   backgroundColor: "blue" | "green" | "yellow" | "purple" | "orange";
 };
 

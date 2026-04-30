@@ -7,6 +7,7 @@ import { theme } from "@/constants/theme";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { calculateUpdatedRelationshipsAfterDailyTimers } from "@/functions/dailyEntryScoreCalculation";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { useColorScheme } from "nativewind";
 import React from "react";
@@ -23,8 +24,37 @@ const DailyEntrys = () => {
 
   const [whosTurn, setWhosTurn] = React.useState<"you" | "them">("them");
   const [selectedRelationship, setSelectedRelationship] = React.useState(0);
+  const [skipPressed, setSkipPressed] = React.useState(false);
 
   const currentRelationship = relationships[selectedRelationship];
+
+  const totalActionsToday = React.useMemo(() => {
+    const today = new Date();
+    return relationships.reduce((sum, rel) => {
+      return (
+        sum +
+        rel.actions.filter((a) => {
+          const d = new Date(a.date);
+          return (
+            d.getFullYear() === today.getFullYear() &&
+            d.getMonth() === today.getMonth() &&
+            d.getDate() === today.getDate()
+          );
+        }).length
+      );
+    }, 0);
+  }, [relationships]);
+  const visibleRelationshipIndices = React.useMemo(() => {
+    if (relationships.length <= 3) {
+      return relationships.map((_, index) => index);
+    }
+
+    const previousIndex =
+      (selectedRelationship - 1 + relationships.length) % relationships.length;
+    const nextIndex = (selectedRelationship + 1) % relationships.length;
+
+    return [previousIndex, selectedRelationship, nextIndex];
+  }, [relationships, selectedRelationship]);
 
   function isSameDayLocal(dateA: Date, dateB: Date) {
     return (
@@ -177,13 +207,73 @@ const DailyEntrys = () => {
             style={{ marginLeft: 20 }}
           />
         )}
+        {isFinished && <View className="flex-1" />}
       </View>
       {isFinished ? (
-        <View className="flex-1 items-center justify-center px-6">
-          <Text className="text-center text-lg" style={{ color: current.text }}>
-            Alle Eintraege fuer heute gemacht. Komm morgen wieder, um neue
-            Eintraege zu machen.
+        <View className="flex-1 items-center justify-center px-8">
+          <LinearGradient
+            colors={current.veryPositive as [string, string]}
+            style={{
+              width: 120,
+              height: 120,
+              borderRadius: 60,
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: 32,
+            }}
+          >
+            <FontAwesome5 name="check" size={52} color="#fff" />
+          </LinearGradient>
+
+          <Text
+            style={{
+              color: current.text,
+              fontSize: 28,
+              fontWeight: "700",
+              marginBottom: 8,
+            }}
+          >
+            Geschafft!
           </Text>
+
+          <Text
+            style={{
+              color: current.basic,
+              fontSize: 16,
+              marginBottom: 12,
+            }}
+          >
+            {totalActionsToday}{" "}
+            {totalActionsToday === 1 ? "Aktion" : "Aktionen"} heute eingetragen
+          </Text>
+
+          <Text
+            style={{
+              color: current.text,
+              fontSize: 14,
+              textAlign: "center",
+              opacity: 0.5,
+              marginBottom: 48,
+              lineHeight: 22,
+            }}
+          >
+            Deine Einträge wurden gespeichert.{"\n"}Komm morgen wieder für
+            deinen nächsten Check-in.
+          </Text>
+
+          <TouchableOpacity
+            onPress={() => router.back()}
+            style={{
+              paddingHorizontal: 36,
+              paddingVertical: 13,
+              borderRadius: 28,
+              backgroundColor: current.basic,
+            }}
+          >
+            <Text style={{ color: "#fff", fontSize: 15, fontWeight: "600" }}>
+              Zurück
+            </Text>
+          </TouchableOpacity>
         </View>
       ) : (
         <>
@@ -194,6 +284,26 @@ const DailyEntrys = () => {
               selected={whosTurn}
             />
           )}
+          <TouchableOpacity
+            onPress={() => {
+              if (!skipPressed) {
+                setSkipPressed(true);
+                nextTurn({ whereTo: "right" });
+              } else {
+                setIsFinished(true);
+              }
+            }}
+            style={{
+              alignSelf: "flex-end",
+              marginTop: 4,
+              marginBottom: 2,
+              opacity: 0.6,
+            }}
+          >
+            <Text style={{ color: current.basic, fontSize: 13 }}>
+              {skipPressed ? "Finish early" : "Skip"}
+            </Text>
+          </TouchableOpacity>
           {/*}
           <View
             className="mt-3 px-4 py-2 rounded-full"
@@ -210,12 +320,6 @@ const DailyEntrys = () => {
             style={{ width: "100%" }}
             contentContainerStyle={{ paddingBottom: 100 }}
           >
-            <TouchableOpacity
-              className="bg-green-500 px-4 py-2 rounded-full items-center justify-center mb-4"
-              onPress={() => setIsFinished(true)}
-            >
-              <Text>Finish</Text>
-            </TouchableOpacity>
             <ActionList
               title={
                 whosTurn === "you"
@@ -246,14 +350,29 @@ const DailyEntrys = () => {
               style={{ marginRight: 20 }}
             />
 
-            {relationships.map((relationship, index) => (
-              <RenderAvatar
-                key={index}
-                avatar={relationship.person.avatar}
-                size={"small"}
-                selected={selectedRelationship === index}
-              />
-            ))}
+            <View className="flex-row items-center justify-center">
+              {visibleRelationshipIndices.map((index) => {
+                const relationship = relationships[index];
+
+                if (!relationship) {
+                  return null;
+                }
+
+                return (
+                  <TouchableOpacity
+                    key={`${relationship.person.name}-${index}`}
+                    onPress={() => setSelectedRelationship(index)}
+                    style={{ marginHorizontal: 4 }}
+                  >
+                    <RenderAvatar
+                      avatar={relationship.person.avatar}
+                      size={"small"}
+                      selected={selectedRelationship === index}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
 
             <FontAwesome5
               name="arrow-right"

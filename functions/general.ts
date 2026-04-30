@@ -8,7 +8,7 @@ export function returnScaleIcon(
     Math.max(yourPoints, theirPoints) * 0.2
   ) {
     return "balance-scale";
-  } else if (yourPoints < theirPoints) {
+  } else if (yourPoints > theirPoints) {
     return "balance-scale-left";
   } else {
     return "balance-scale-right";
