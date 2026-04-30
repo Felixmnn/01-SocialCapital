@@ -1,8 +1,8 @@
 import React from "react";
 import {
-  RewardedAd,
-  RewardedAdEventType,
-  TestIds,
+    RewardedAd,
+    RewardedAdEventType,
+    TestIds,
 } from "react-native-google-mobile-ads";
 
 const PROD_UNIT_ID = "ca-app-pub-9834411851111627/4978218870";
