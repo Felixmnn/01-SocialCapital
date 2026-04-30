@@ -85,7 +85,7 @@ const AvatarEditor = ({
   const current = theme[resolvedScheme];
 
   return (
-    <View className="w-full max-w-md gap-2 rounded-2xl mt-2">
+    <View className="w-[95%] max-w-md gap-2 rounded-2xl mt-2">
       <RowControl
         label="Character"
         value={avatar.selectedCharacter}

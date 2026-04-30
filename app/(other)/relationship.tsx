@@ -1,3 +1,4 @@
+import AvatarNameEditor from "@/components/avatar/avatarNameEditor";
 import AvatarWithStats from "@/components/avatar/avatarWithStats";
 import InkBadeCollection from "@/components/badges/inkBadeCollection";
 import GradientToBackground from "@/components/gradientToBackground";
@@ -12,19 +13,33 @@ import React from "react";
 import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 
 const Relationship = () => {
-  const { relationships, yourStats } = useGlobalContext();
+  const { relationships, yourStats, setRelationships } = useGlobalContext();
   const [selectedStatusTarget, setSelectedStatusTarget] = React.useState<
     "you" | "them" | null
   >(null);
+  const [isEditOtherOpen, setIsEditOtherOpen] = React.useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = React.useState(false);
+  const [isEditAvatarOpen, setIsEditAvatarOpen] = React.useState(false);
   const params = useLocalSearchParams<{ relationshipIndex?: string }>();
   const selectedIndex = Number(params.relationshipIndex ?? -1);
   const relationship =
     Number.isInteger(selectedIndex) && selectedIndex >= 0
       ? relationships[selectedIndex]
       : undefined;
+  const [draftName, setDraftName] = React.useState("");
+  const [draftAvatar, setDraftAvatar] = React.useState(
+    relationship?.person.avatar,
+  );
   const { colorScheme } = useColorScheme();
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
   const current = theme[resolvedScheme];
+
+  React.useEffect(() => {
+    if (!relationship) return;
+    setDraftName(relationship.person.name);
+    setDraftAvatar(relationship.person.avatar);
+    setIsEditAvatarOpen(false);
+  }, [relationship?.person.name, relationship?.person.avatar]);
 
   if (!relationship) {
     return (
@@ -131,6 +146,40 @@ const Relationship = () => {
           false,
         );
 
+  function saveOtherChanges() {
+    if (!relationship || !draftAvatar) return;
+
+    const trimmedName = draftName.trim();
+    if (!trimmedName) return;
+
+    setRelationships((prev) =>
+      prev.map((item, index) =>
+        index === selectedIndex
+          ? {
+              ...item,
+              person: {
+                ...item.person,
+                name: trimmedName,
+                avatar: draftAvatar,
+              },
+            }
+          : item,
+      ),
+    );
+    setIsEditOtherOpen(false);
+    setIsEditAvatarOpen(false);
+  }
+
+  function deleteRelationship() {
+    if (relationships.length <= 1) return;
+
+    setRelationships((prev) =>
+      prev.filter((_, index) => index !== selectedIndex),
+    );
+    setIsDeleteConfirmOpen(false);
+    router.back();
+  }
+
   return (
     <View
       style={{
@@ -232,7 +281,7 @@ const Relationship = () => {
               justifyContent: "center",
               alignItems: "center",
               backgroundColor: "rgba(0, 0, 0, 0.5)",
-              padding: 24,
+              padding: 6,
             }}
           >
             <Pressable
@@ -344,7 +393,276 @@ const Relationship = () => {
             })
           )}
         </View>
+
+        <View
+          className="mt-6 p-4 rounded-xl"
+          style={{ borderWidth: 1, borderColor: current.basic }}
+        >
+          <Text
+            style={{ color: current.text, fontWeight: "700", marginBottom: 10 }}
+          >
+            Relationship verwalten
+          </Text>
+
+          <Pressable
+            onPress={() => setIsEditOtherOpen(true)}
+            style={{
+              borderWidth: 1,
+              borderColor: current.basic,
+              borderRadius: 10,
+              paddingVertical: 10,
+              paddingHorizontal: 12,
+              marginBottom: relationships.length > 1 ? 10 : 0,
+            }}
+          >
+            <Text
+              style={{
+                color: current.basic,
+                textAlign: "center",
+                fontWeight: "600",
+              }}
+            >
+              Other bearbeiten
+            </Text>
+          </Pressable>
+
+          {relationships.length > 1 && (
+            <Pressable
+              onPress={() => setIsDeleteConfirmOpen(true)}
+              style={{
+                borderWidth: 1,
+                borderColor: "#dc2626",
+                borderRadius: 10,
+                paddingVertical: 10,
+                paddingHorizontal: 12,
+              }}
+            >
+              <Text
+                style={{
+                  color: "#dc2626",
+                  textAlign: "center",
+                  fontWeight: "600",
+                }}
+              >
+                Relationship beenden
+              </Text>
+            </Pressable>
+          )}
+        </View>
       </ScrollView>
+
+      <Modal
+        visible={isEditOtherOpen}
+        transparent
+        animationType="fade"
+        presentationStyle="overFullScreen"
+        statusBarTranslucent
+        navigationBarTranslucent
+        onRequestClose={() => {
+          setIsEditOtherOpen(false);
+          setIsEditAvatarOpen(false);
+        }}
+      >
+        <Pressable
+          onPress={() => {
+            setIsEditOtherOpen(false);
+            setIsEditAvatarOpen(false);
+          }}
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            padding: 24,
+          }}
+        >
+          <Pressable
+            onPress={() => undefined}
+            style={{
+              width: "100%",
+              maxWidth: 360,
+              borderRadius: 16,
+              padding: 18,
+              backgroundColor: current.background,
+            }}
+          >
+            <Text
+              style={{
+                color: current.text,
+                fontWeight: "700",
+                fontSize: 18,
+                marginBottom: 10,
+                textAlign: "center",
+              }}
+            >
+              Other bearbeiten
+            </Text>
+
+            {draftAvatar && (
+              <AvatarNameEditor
+                you={{ name: draftName, avatar: draftAvatar }}
+                setYou={(value) => {
+                  setDraftName(value.name);
+                  setDraftAvatar(value.avatar);
+                }}
+                editAvatar={isEditAvatarOpen}
+                setEditAvatar={setIsEditAvatarOpen}
+                avatar={draftAvatar}
+                setAvatar={setDraftAvatar}
+                text={draftName}
+                setText={setDraftName}
+                showTextWhenNotEditing
+              />
+            )}
+
+            <View style={{ flexDirection: "row", marginTop: 12 }}>
+              <Pressable
+                onPress={() => {
+                  setIsEditOtherOpen(false);
+                  setIsEditAvatarOpen(false);
+                }}
+                style={{
+                  flex: 1,
+                  borderWidth: 1,
+                  borderColor: current.basic,
+                  borderRadius: 10,
+                  paddingVertical: 10,
+                  marginRight: 6,
+                }}
+              >
+                <Text
+                  style={{
+                    color: current.basic,
+                    textAlign: "center",
+                    fontWeight: "600",
+                  }}
+                >
+                  Abbrechen
+                </Text>
+              </Pressable>
+              <Pressable
+                onPress={saveOtherChanges}
+                style={{
+                  flex: 1,
+                  borderRadius: 10,
+                  paddingVertical: 10,
+                  marginLeft: 6,
+                  backgroundColor: current.basic,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "white",
+                    textAlign: "center",
+                    fontWeight: "600",
+                  }}
+                >
+                  Speichern
+                </Text>
+              </Pressable>
+            </View>
+          </Pressable>
+        </Pressable>
+      </Modal>
+
+      <Modal
+        visible={isDeleteConfirmOpen}
+        transparent
+        animationType="fade"
+        presentationStyle="overFullScreen"
+        statusBarTranslucent
+        navigationBarTranslucent
+        onRequestClose={() => setIsDeleteConfirmOpen(false)}
+      >
+        <Pressable
+          onPress={() => setIsDeleteConfirmOpen(false)}
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            padding: 24,
+          }}
+        >
+          <Pressable
+            onPress={() => undefined}
+            style={{
+              width: "100%",
+              maxWidth: 340,
+              borderRadius: 16,
+              padding: 18,
+              backgroundColor: current.background,
+            }}
+          >
+            <Text
+              style={{
+                color: current.text,
+                fontWeight: "700",
+                fontSize: 18,
+                marginBottom: 8,
+                textAlign: "center",
+              }}
+            >
+              Relationship beenden?
+            </Text>
+            <Text
+              style={{
+                color: current.text,
+                textAlign: "center",
+                opacity: 0.8,
+                marginBottom: 14,
+                lineHeight: 20,
+              }}
+            >
+              Diese Relationship wird dauerhaft geloescht.
+            </Text>
+
+            <View style={{ flexDirection: "row" }}>
+              <Pressable
+                onPress={() => setIsDeleteConfirmOpen(false)}
+                style={{
+                  flex: 1,
+                  borderWidth: 1,
+                  borderColor: current.basic,
+                  borderRadius: 10,
+                  paddingVertical: 10,
+                  marginRight: 6,
+                }}
+              >
+                <Text
+                  style={{
+                    color: current.basic,
+                    textAlign: "center",
+                    fontWeight: "600",
+                  }}
+                >
+                  Abbrechen
+                </Text>
+              </Pressable>
+              <Pressable
+                onPress={deleteRelationship}
+                style={{
+                  flex: 1,
+                  borderRadius: 10,
+                  paddingVertical: 10,
+                  marginLeft: 6,
+                  backgroundColor: "#dc2626",
+                }}
+              >
+                <Text
+                  style={{
+                    color: "white",
+                    textAlign: "center",
+                    fontWeight: "600",
+                  }}
+                >
+                  Loeschen
+                </Text>
+              </Pressable>
+            </View>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </View>
   );
 };

@@ -18,9 +18,22 @@ const DailyEntrys = () => {
   const { colorScheme } = useColorScheme();
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
   const current = theme[resolvedScheme];
+  const [hasExistingEntryToday] = React.useState(() => {
+    const today = new Date();
+    return relationships.some((rel) =>
+      rel.actions.some((entry) => {
+        const d = new Date(entry.date);
+        return (
+          d.getFullYear() === today.getFullYear() &&
+          d.getMonth() === today.getMonth() &&
+          d.getDate() === today.getDate()
+        );
+      }),
+    );
+  });
   const [remainingTime, setRemainingTime] = React.useState(60);
   const [paused, setPaused] = React.useState(false);
-  const [isFinished, setIsFinished] = React.useState(false);
+  const [isFinished, setIsFinished] = React.useState(hasExistingEntryToday);
 
   const [whosTurn, setWhosTurn] = React.useState<"you" | "them">("them");
   const [selectedRelationship, setSelectedRelationship] = React.useState(0);
@@ -110,12 +123,12 @@ const DailyEntrys = () => {
   }, [relationships.length]);
 
   React.useEffect(() => {
-    if (isFinished) {
+    if (isFinished && !hasExistingEntryToday) {
       setRelationships((prev) =>
         calculateUpdatedRelationshipsAfterDailyTimers(prev),
       );
     }
-  }, [isFinished, setRelationships]);
+  }, [isFinished, hasExistingEntryToday, setRelationships]);
 
   function addActionToCurrentRelationship(action: Action) {
     setRelationships((prev) => {
@@ -233,7 +246,7 @@ const DailyEntrys = () => {
               marginBottom: 8,
             }}
           >
-            Geschafft!
+            {hasExistingEntryToday ? "Heute schon erledigt" : "Geschafft!"}
           </Text>
 
           <Text
@@ -257,8 +270,9 @@ const DailyEntrys = () => {
               lineHeight: 22,
             }}
           >
-            Deine Einträge wurden gespeichert.{"\n"}Komm morgen wieder für
-            deinen nächsten Check-in.
+            {hasExistingEntryToday
+              ? "Du hast deinen Daily-Eintrag fuer heute bereits gemacht.\nKomm morgen wieder fuer den naechsten Check-in."
+              : "Deine Einträge wurden gespeichert.\nKomm morgen wieder für deinen nächsten Check-in."}
           </Text>
 
           <TouchableOpacity
