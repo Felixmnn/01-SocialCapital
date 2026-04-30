@@ -1,4 +1,5 @@
 import ActionList from "@/components/actionList";
+import { useRewardedAd } from "@/components/adBanner";
 import RenderAvatar from "@/components/avatar/avatar";
 import AvatarCorrelation from "@/components/avatar/avatarCorrelation";
 import Timer from "@/components/timer";
@@ -31,6 +32,11 @@ const DailyEntrys = () => {
       }),
     );
   });
+  const [adRewarded, setAdRewarded] = React.useState(false);
+  const { loaded: adLoaded, showAd } = useRewardedAd(
+    React.useCallback(() => setAdRewarded(true), []),
+  );
+
   const [remainingTime, setRemainingTime] = React.useState(60);
   const [paused, setPaused] = React.useState(false);
   const [isFinished, setIsFinished] = React.useState(hasExistingEntryToday);
@@ -274,6 +280,39 @@ const DailyEntrys = () => {
               ? "Du hast deinen Daily-Eintrag fuer heute bereits gemacht.\nKomm morgen wieder fuer den naechsten Check-in."
               : "Deine Einträge wurden gespeichert.\nKomm morgen wieder für deinen nächsten Check-in."}
           </Text>
+
+          {!hasExistingEntryToday && !adRewarded && adLoaded && (
+            <TouchableOpacity
+              onPress={showAd}
+              style={{
+                paddingHorizontal: 36,
+                paddingVertical: 13,
+                borderRadius: 28,
+                backgroundColor: current.veryPositive[0],
+                marginBottom: 12,
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              <FontAwesome5 name="gift" size={16} color="#fff" />
+              <Text style={{ color: "#fff", fontSize: 15, fontWeight: "600" }}>
+                Bonus verdienen
+              </Text>
+            </TouchableOpacity>
+          )}
+          {adRewarded && (
+            <Text
+              style={{
+                color: current.basic,
+                fontSize: 14,
+                fontWeight: "600",
+                marginBottom: 12,
+              }}
+            >
+              Danke! Bonus erhalten.
+            </Text>
+          )}
 
           <TouchableOpacity
             onPress={() => router.back()}
