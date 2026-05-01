@@ -190,6 +190,7 @@ const Settings = () => {
             />
           </View>
 
+          {/* Maybe with version 2
           <View
             style={{
               ...settingsRowStyle,
@@ -218,7 +219,7 @@ const Settings = () => {
               }
             />
           </View>
-
+          */}
           <Pressable
             onPress={() => toggleSection("sync")}
             style={{

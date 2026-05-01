@@ -3,7 +3,7 @@ import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
 import { useColorScheme } from "nativewind";
 import { useEffect, useRef, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Image, View } from "react-native";
 import { theme } from "../constants/theme";
 
 export default function Index() {
@@ -41,16 +41,11 @@ export default function Index() {
       className="flex-1 items-center justify-center p-4"
       style={{ backgroundColor: currentTheme.background }}
     >
-      <TouchableOpacity
-        className="bg-red-500 p-4 w-full"
-        onPress={() => router.push("/(onboarding)/aboutUs")}
-      ></TouchableOpacity>
-      <TouchableOpacity
-        className="bg-green-500 p-4 w-full mt-4"
-        onPress={() => router.push("/(start)/you")}
-      >
-        <Text>Home</Text>
-      </TouchableOpacity>
+      <Image
+        source={require("../assets/images/icon.png")}
+        style={{ width: 200, height: 200, marginBottom: 24 }}
+        resizeMode="contain"
+      />
     </View>
   );
 }
