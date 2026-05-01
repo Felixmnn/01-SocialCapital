@@ -256,6 +256,9 @@ const RelationshipList = ({
       currentWidth === nextWidth ? currentWidth : nextWidth,
     );
   };
+  const { colorScheme } = useColorScheme();
+  const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
+  const current = theme[resolvedScheme];
 
   return (
     <View
@@ -266,13 +269,13 @@ const RelationshipList = ({
           <FontAwesome5
             name="sort"
             size={24}
-            color={"white"}
+            color={current.text}
             onPress={() => setSortRelationShips(!sortRelationShips)}
           />
           <FontAwesome5
             name={details ? "th-list" : "th"}
             size={24}
-            color={"white"}
+            color={current.text}
             onPress={() => setDetails(!details)}
             style={{ marginLeft: 20 }}
           />
@@ -280,7 +283,7 @@ const RelationshipList = ({
         <FontAwesome5
           name="user-plus"
           size={24}
-          color={"white"}
+          color={current.text}
           onPress={onPressAddUser}
         />
       </View>

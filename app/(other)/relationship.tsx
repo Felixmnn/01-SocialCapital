@@ -206,7 +206,7 @@ const Relationship = () => {
               <AvatarWithStats
                 avatar={yourStats.avatar}
                 name={yourStats?.name || "Du"}
-                points={relationship.points.yourPoints}
+                points={Math.floor(relationship.points.yourPoints)}
               />
             )}
             <View

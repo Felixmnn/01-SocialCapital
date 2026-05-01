@@ -25,7 +25,8 @@ const RenderAvatar = ({
         className=" items-center justify-center  "
         style={{
           borderWidth: selected ? 4 : 0,
-          borderColor: selected ? "blue" : "transparent",
+          borderColor: selected ? "#3b82f6" : "transparent",
+          borderRadius: 999,
           height: size == "medium" ? 120 : size == "small" ? 60 : 180,
           width: size == "medium" ? 120 : size == "small" ? 60 : 180,
         }}
@@ -37,7 +38,7 @@ const RenderAvatar = ({
         >
           <Defs>
             <ClipPath id="circleClip">
-              <Circle cx="190" cy="190" r="180" />
+              <Circle cx="180" cy="185" r="180" />
             </ClipPath>
           </Defs>
 
@@ -72,7 +73,8 @@ const RenderAvatar = ({
         className=" items-center justify-center "
         style={{
           borderWidth: selected ? 4 : 0,
-          borderColor: selected ? "blue" : "transparent",
+          borderColor: selected ? "#3b82f6" : "transparent",
+          borderRadius: 999,
 
           height: size == "medium" ? 120 : size == "small" ? 60 : 180,
           width: size == "medium" ? 120 : size == "small" ? 60 : 180,
@@ -85,7 +87,7 @@ const RenderAvatar = ({
         >
           <Defs>
             <ClipPath id="circleClip">
-              <Circle cx="190" cy="190" r="180" />
+              <Circle cx="180" cy="185" r="180" />
             </ClipPath>
           </Defs>
 
@@ -283,8 +285,8 @@ const RenderAvatar = ({
         className=" items-center justify-center "
         style={{
           borderWidth: selected ? 4 : 0,
-          borderColor: selected ? "blue" : "transparent",
-
+          borderColor: selected ? "#3b82f6" : "transparent",
+          borderRadius: 999,
           height: size == "medium" ? 120 : size == "small" ? 60 : 180,
           width: size == "medium" ? 120 : size == "small" ? 60 : 180,
         }}
@@ -296,7 +298,7 @@ const RenderAvatar = ({
         >
           <Defs>
             <ClipPath id="circleClip">
-              <Circle cx="190" cy="190" r="180" />
+              <Circle cx="180" cy="185" r="180" />
             </ClipPath>
           </Defs>
 
@@ -469,7 +471,8 @@ const RenderAvatar = ({
         className=" items-center justify-center "
         style={{
           borderWidth: selected ? 4 : 0,
-          borderColor: selected ? "blue" : "transparent",
+          borderColor: selected ? "#3b82f6" : "transparent",
+          borderRadius: 999,
 
           height: size == "medium" ? 120 : size == "small" ? 60 : 180,
           width: size == "medium" ? 120 : size == "small" ? 60 : 180,
@@ -482,7 +485,7 @@ const RenderAvatar = ({
         >
           <Defs>
             <ClipPath id="circleClip">
-              <Circle cx="190" cy="190" r="180" />
+              <Circle cx="180" cy="185" r="180" />
             </ClipPath>
           </Defs>
 
@@ -612,7 +615,8 @@ const RenderAvatar = ({
         className=" items-center justify-center "
         style={{
           borderWidth: selected ? 4 : 0,
-          borderColor: selected ? "blue" : "transparent",
+          borderColor: selected ? "#3b82f6" : "transparent",
+          borderRadius: 999,
 
           height: size == "medium" ? 120 : size == "small" ? 60 : 180,
           width: size == "medium" ? 120 : size == "small" ? 60 : 180,
@@ -625,7 +629,7 @@ const RenderAvatar = ({
         >
           <Defs>
             <ClipPath id="circleClip">
-              <Circle cx="190" cy="190" r="180" />
+              <Circle cx="180" cy="185" r="180" />
             </ClipPath>
           </Defs>
 
@@ -702,7 +706,8 @@ const RenderAvatar = ({
         className=" items-center justify-center "
         style={{
           borderWidth: selected ? 4 : 0,
-          borderColor: selected ? "blue" : "transparent",
+          borderColor: selected ? "#3b82f6" : "transparent",
+          borderRadius: 999,
 
           height: size == "medium" ? 120 : size == "small" ? 60 : 180,
           width: size == "medium" ? 120 : size == "small" ? 60 : 180,
@@ -715,7 +720,7 @@ const RenderAvatar = ({
         >
           <Defs>
             <ClipPath id="circleClip">
-              <Circle cx="190" cy="190" r="180" />
+              <Circle cx="180" cy="185" r="180" />
             </ClipPath>
           </Defs>
 
@@ -907,7 +912,8 @@ const RenderAvatar = ({
       className=" items-center justify-center "
       style={{
         borderWidth: selected ? 4 : 0,
-        borderColor: selected ? "blue" : "transparent",
+        borderColor: selected ? "#3b82f6" : "transparent",
+        borderRadius: 999,
 
         height: size == "medium" ? 120 : size == "small" ? 60 : 180,
         width: size == "medium" ? 120 : size == "small" ? 60 : 180,
@@ -920,7 +926,7 @@ const RenderAvatar = ({
       >
         <Defs>
           <ClipPath id="circleClip">
-            <Circle cx="190" cy="190" r="180" />
+            <Circle cx="180" cy="185" r="180" />
           </ClipPath>
         </Defs>
 

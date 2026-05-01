@@ -85,7 +85,7 @@ const AvatarEditor = ({
   const current = theme[resolvedScheme];
 
   return (
-    <View className="w-[95%] max-w-md gap-2 rounded-2xl mt-2">
+    <View className=" max-w-md gap-2 rounded-2xl mt-2 ">
       <RowControl
         label="Character"
         value={avatar.selectedCharacter}
@@ -222,10 +222,11 @@ const RowControl = ({
   return (
     <LinearGradient
       colors={[current.purpleGradient[0], current.purpleGradient[1]]}
-      className="flex-row items-center justify-between rounded-xl bg-zinc-800/80 px-3 py-2 "
+      className="flex-row items-center justify-between rounded-xl bg-zinc-800/80 px-3 py-2"
       style={{
         backgroundColor: current.basic,
         borderRadius: 12,
+        height: 40,
       }}
     >
       <Text className="w-24 text-xs font-semibold text-zinc-300">{label}</Text>
@@ -236,7 +237,12 @@ const RowControl = ({
           className="h-8 w-8 items-center justify-center rounded-lg bg-zinc-700"
           style={{ backgroundColor: current.background }}
         >
-          <Text className="text-base font-bold text-white">{"<"}</Text>
+          <Text
+            className="text-base font-bold text-white"
+            style={{ color: current.text }}
+          >
+            {"<"}
+          </Text>
         </Pressable>
 
         <Text className="min-w-[120px] text-center text-sm font-medium text-white">
@@ -248,7 +254,12 @@ const RowControl = ({
           className="h-8 w-8 items-center justify-center rounded-lg bg-zinc-700"
           style={{ backgroundColor: current.background }}
         >
-          <Text className="text-base font-bold text-white">{">"}</Text>
+          <Text
+            className="text-base font-bold text-white"
+            style={{ color: current.text }}
+          >
+            {">"}
+          </Text>
         </Pressable>
       </View>
     </LinearGradient>

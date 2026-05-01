@@ -5,6 +5,7 @@ import GradientToBackground from "@/components/gradientToBackground";
 import PointOverview from "@/components/pointOverview";
 import Streak from "@/components/streak";
 import { theme } from "@/constants/theme";
+import { SpecificBadgeId } from "@/constants/types";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import {
   calculateAverageAttention,
@@ -30,6 +31,8 @@ const You = () => {
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
   const current = theme[resolvedScheme];
   const [statusModalVisible, setStatusModalVisible] = React.useState(false);
+  const [badgeModalVisible, setBadgeModalVisible] = React.useState(false);
+  const [earnedPatch] = React.useState<SpecificBadgeId>("streak7");
 
   function calculateRelationshipStatus(): "positive" | "critical" | "balanced" {
     const theirPoints = calculateTheirPoints(relationships);
@@ -106,17 +109,6 @@ const You = () => {
             />
           </View>
         </Pressable>
-        <Text
-          style={{
-            color: current.text,
-            fontSize: 18,
-            fontWeight: "600",
-            marginLeft: 12,
-          }}
-        >
-          Du bist ein {statusLabel}
-        </Text>
-
         <Modal
           visible={statusModalVisible}
           transparent
@@ -198,7 +190,6 @@ const You = () => {
         />
         <RewardedAdButton />
       </View>
-      <Text style={{ color: current.text }}>Y</Text>
     </View>
   );
 };

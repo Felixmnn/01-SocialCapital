@@ -9,16 +9,23 @@ export type SpecificBadgeId =
   | "critical"
   | "balanced"
   | "positive"
-  | "streak1"
-  | "streak2"
+  | "veryPositive"
+  | "trustworthy"
+  | "attentive"
+  | "supportive"
+  | "giver"
+  | "strongRelationship"
+  | "receiver"
   | "streak3"
-  | "streak4"
-  | "streak5"
-  | "streak6"
   | "streak7"
-  | "streak8"
-  | "streak9"
-  | "streak10";
+  | "streak30"
+  | "streak60"
+  | "streak67"
+  | "streak90"
+  | "streak180"
+  | "streak365"
+  | "streak500"
+  | "streak1000";
 
 export type Status = "critical" | "balanced" | "positive";
 
