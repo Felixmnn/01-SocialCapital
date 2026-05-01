@@ -10,10 +10,12 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useColorScheme } from "nativewind";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 
 const Relationship = () => {
   const { relationships, yourStats, setRelationships } = useGlobalContext();
+  const { t } = useTranslation();
   const [selectedStatusTarget, setSelectedStatusTarget] = React.useState<
     "you" | "them" | null
   >(null);
@@ -51,7 +53,9 @@ const Relationship = () => {
           backgroundColor: current.background,
         }}
       >
-        <Text style={{ color: current.text }}>Relationship not found</Text>
+        <Text style={{ color: current.text }}>
+          {t("relationship.notFound")}
+        </Text>
       </View>
     );
   }
@@ -89,10 +93,10 @@ const Relationship = () => {
             : "smile-wink",
       label:
         status === "positive"
-          ? "Geber"
+          ? t("relationship.statusGiver")
           : status === "critical"
-            ? "Nehmer"
-            : "Balancierer",
+            ? t("relationship.statusReceiver")
+            : t("relationship.statusBalanced"),
     };
   }
 
@@ -113,29 +117,23 @@ const Relationship = () => {
     isYou: boolean,
   ) {
     if (isYou) {
-      if (status === "positive") {
-        return "Du bist in dieser Beziehung aktuell eher ein Geber: Du investierst mehr in die Beziehung, als du zurueckbekommst.";
-      }
-      if (status === "critical") {
-        return "Du bist in dieser Beziehung aktuell eher ein Nehmer: Du bekommst mehr aus der Beziehung, als du selbst einbringst.";
-      }
-      return "Du bist in dieser Beziehung aktuell ausgeglichen: Geben und Nehmen sind bei dir ungefaehr gleich verteilt.";
+      if (status === "positive") return t("relationship.giverDescriptionYou");
+      if (status === "critical")
+        return t("relationship.receiverDescriptionYou");
+      return t("relationship.balancedDescriptionYou");
     }
-
-    if (status === "positive") {
-      return `${targetName} ist in dieser Beziehung aktuell eher ein Geber: Die Person investiert mehr in die Beziehung, als sie zurueckbekommt.`;
-    }
-    if (status === "critical") {
-      return `${targetName} ist in dieser Beziehung aktuell eher ein Nehmer: Die Person bekommt mehr aus der Beziehung, als sie selbst einbringt.`;
-    }
-    return `${targetName} ist in dieser Beziehung aktuell ausgeglichen: Geben und Nehmen sind bei der Person ungefaehr gleich verteilt.`;
+    if (status === "positive")
+      return t("relationship.giverDescriptionThem", { name: targetName });
+    if (status === "critical")
+      return t("relationship.receiverDescriptionThem", { name: targetName });
+    return t("relationship.balancedDescriptionThem", { name: targetName });
   }
 
   const modalStatus = selectedStatusTarget === "you" ? yourStatus : theirStatus;
   const modalMeta = getStatusMeta(modalStatus);
   const modalName =
     selectedStatusTarget === "you"
-      ? yourStats?.name || "Du"
+      ? yourStats?.name || t("relationship.you")
       : relationship.person.name;
   const modalDescription =
     selectedStatusTarget === "you"
@@ -205,7 +203,7 @@ const Relationship = () => {
             {yourStats && (
               <AvatarWithStats
                 avatar={yourStats.avatar}
-                name={yourStats?.name || "Du"}
+                name={yourStats?.name || t("relationship.you")}
                 points={Math.floor(relationship.points.yourPoints)}
               />
             )}
@@ -318,7 +316,7 @@ const Relationship = () => {
                   marginBottom: 8,
                 }}
               >
-                Status von {modalName}: {modalMeta.label}
+                {t("relationship.statusOf")} {modalName}: {modalMeta.label}
               </Text>
               <Text
                 style={{
@@ -365,16 +363,18 @@ const Relationship = () => {
           <Text
             style={{ color: current.text, fontWeight: "700", marginBottom: 10 }}
           >
-            Letzte Aktionen
+            {t("relationship.lastActions")}
           </Text>
           {latestActions.length === 0 ? (
             <Text style={{ color: current.text }}>
-              Noch keine Aktionen vorhanden.
+              {t("relationship.noActions")}
             </Text>
           ) : (
             latestActions.map((entry, index) => {
               const actorLabel =
-                entry.actor === "you" ? "Du" : relationship.person.name;
+                entry.actor === "you"
+                  ? t("relationship.you")
+                  : relationship.person.name;
               return (
                 <View
                   key={`${entry.actionID}-${entry.date}-${index}`}
@@ -401,7 +401,7 @@ const Relationship = () => {
           <Text
             style={{ color: current.text, fontWeight: "700", marginBottom: 10 }}
           >
-            Relationship verwalten
+            {t("relationship.manage")}
           </Text>
 
           <Pressable
@@ -422,7 +422,7 @@ const Relationship = () => {
                 fontWeight: "600",
               }}
             >
-              Other bearbeiten
+              {t("relationship.editPerson")}
             </Text>
           </Pressable>
 
@@ -495,7 +495,7 @@ const Relationship = () => {
                 textAlign: "center",
               }}
             >
-              Other bearbeiten
+              {t("relationship.editPerson")}
             </Text>
 
             {draftAvatar && (
@@ -537,7 +537,7 @@ const Relationship = () => {
                     fontWeight: "600",
                   }}
                 >
-                  Abbrechen
+                  {t("common.cancel")}
                 </Text>
               </Pressable>
               <Pressable
@@ -557,7 +557,7 @@ const Relationship = () => {
                     fontWeight: "600",
                   }}
                 >
-                  Speichern
+                  {t("common.save")}
                 </Text>
               </Pressable>
             </View>
@@ -603,7 +603,7 @@ const Relationship = () => {
                 textAlign: "center",
               }}
             >
-              Relationship beenden?
+              {t("relationship.deleteConfirm")}
             </Text>
             <Text
               style={{
@@ -614,7 +614,7 @@ const Relationship = () => {
                 lineHeight: 20,
               }}
             >
-              Diese Relationship wird dauerhaft geloescht.
+              {t("relationship.deleteHint")}
             </Text>
 
             <View style={{ flexDirection: "row" }}>
@@ -636,7 +636,7 @@ const Relationship = () => {
                     fontWeight: "600",
                   }}
                 >
-                  Abbrechen
+                  {t("common.cancel")}
                 </Text>
               </Pressable>
               <Pressable
@@ -656,7 +656,7 @@ const Relationship = () => {
                     fontWeight: "600",
                   }}
                 >
-                  Loeschen
+                  {t("common.delete")}
                 </Text>
               </Pressable>
             </View>

@@ -12,6 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { useColorScheme } from "nativewind";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 const DailyEntrys = () => {
@@ -19,6 +20,7 @@ const DailyEntrys = () => {
   const { colorScheme } = useColorScheme();
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
   const current = theme[resolvedScheme];
+  const { t } = useTranslation();
   const [hasExistingEntryToday] = React.useState(() => {
     const today = new Date();
     return relationships.some((rel) =>
@@ -252,7 +254,9 @@ const DailyEntrys = () => {
               marginBottom: 8,
             }}
           >
-            {hasExistingEntryToday ? "Heute schon erledigt" : "Geschafft!"}
+            {hasExistingEntryToday
+              ? t("dailyEntry.alreadyDone")
+              : t("dailyEntry.done")}
           </Text>
 
           <Text
@@ -263,7 +267,9 @@ const DailyEntrys = () => {
             }}
           >
             {totalActionsToday}{" "}
-            {totalActionsToday === 1 ? "Aktion" : "Aktionen"} heute eingetragen
+            {totalActionsToday === 1
+              ? t("dailyEntry.actionsSingular")
+              : t("dailyEntry.actionsPlural")}
           </Text>
 
           <Text
@@ -277,8 +283,8 @@ const DailyEntrys = () => {
             }}
           >
             {hasExistingEntryToday
-              ? "Du hast deinen Daily-Eintrag fuer heute bereits gemacht.\nKomm morgen wieder fuer den naechsten Check-in."
-              : "Deine Einträge wurden gespeichert.\nKomm morgen wieder für deinen nächsten Check-in."}
+              ? t("dailyEntry.alreadyDoneHint")
+              : t("dailyEntry.comeBackTomorrow")}
           </Text>
 
           {!hasExistingEntryToday && !adRewarded && adLoaded && (
@@ -297,7 +303,7 @@ const DailyEntrys = () => {
             >
               <FontAwesome5 name="gift" size={16} color="#fff" />
               <Text style={{ color: "#fff", fontSize: 15, fontWeight: "600" }}>
-                Bonus verdienen
+                {t("dailyEntry.earnBonus")}
               </Text>
             </TouchableOpacity>
           )}
@@ -310,7 +316,7 @@ const DailyEntrys = () => {
                 marginBottom: 12,
               }}
             >
-              Danke! Bonus erhalten.
+              {t("dailyEntry.bonusReceived")}
             </Text>
           )}
 
@@ -324,7 +330,7 @@ const DailyEntrys = () => {
             }}
           >
             <Text style={{ color: "#fff", fontSize: 15, fontWeight: "600" }}>
-              Zurück
+              {t("dailyEntry.back")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -354,7 +360,7 @@ const DailyEntrys = () => {
             }}
           >
             <Text style={{ color: current.basic, fontSize: 13 }}>
-              {skipPressed ? "Finish early" : "Skip"}
+              {skipPressed ? t("dailyEntry.finishEarly") : t("dailyEntry.skip")}
             </Text>
           </TouchableOpacity>
           {/*}
@@ -376,20 +382,21 @@ const DailyEntrys = () => {
             <ActionList
               title={
                 whosTurn === "you"
-                  ? "Deine Aktionen"
-                  : "Aktionen von " +
-                    (currentRelationship?.person.name ?? "them")
+                  ? t("dailyEntry.yourActions")
+                  : t("dailyEntry.actionsOf", {
+                      name: currentRelationship?.person.name ?? "",
+                    })
               }
               actions={selectedActions}
               onPress={(action) => removeActionFromCurrentRelationship(action)}
             />
             <ActionList
-              title="Positive"
+              title={t("dailyEntry.positive")}
               actions={positiveAction}
               onPress={(action) => addActionToCurrentRelationship(action)}
             />
             <ActionList
-              title="Negative"
+              title={t("dailyEntry.negative")}
               actions={negativeAction}
               onPress={(action) => addActionToCurrentRelationship(action)}
             />

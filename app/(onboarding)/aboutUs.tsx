@@ -3,6 +3,7 @@ import { theme } from "@/constants/theme";
 import { router } from "expo-router";
 import { useColorScheme } from "nativewind";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Image, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -10,6 +11,7 @@ const AboutUs = () => {
   const { colorScheme } = useColorScheme();
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
   const current = theme[resolvedScheme];
+  const { t } = useTranslation();
 
   return (
     <SafeAreaView
@@ -46,11 +48,11 @@ const AboutUs = () => {
             width: 200,
           }}
         >
-          Because money isn't everything
+          {t("onboarding.tagline")}
         </Text>
       </View>
       <CustomButton
-        title="Get Started"
+        title={t("onboarding.getStarted")}
         onPress={() => router.push("/(onboarding)/gettingStarted")}
       />
     </SafeAreaView>

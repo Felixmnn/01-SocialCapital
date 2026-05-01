@@ -9,6 +9,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useColorScheme } from "nativewind";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -53,6 +54,7 @@ const AddUser = () => {
   const { colorScheme } = useColorScheme();
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
   const current = theme[resolvedScheme];
+  const { t } = useTranslation();
 
   const [newRelationship, setNewRelationship] =
     React.useState<Relationship>(defaultRelationship);
@@ -76,9 +78,9 @@ const AddUser = () => {
   const buttonTitle =
     currentStep === "one"
       ? newRelationship.person.name.length > 0
-        ? "Continue"
-        : "Choose a name"
-      : "Add user";
+        ? t("addUser.continueBtn")
+        : t("addUser.chooseName")
+      : t("addUser.addUserBtn");
 
   const buttonDisabled =
     currentStep === "one" && newRelationship.person.name.length === 0;
@@ -143,11 +145,11 @@ const AddUser = () => {
             <View className="flex-row items-center justify-between w-[300px] px-4">
               <AvatarWithName
                 avatar={yourStats?.avatar ?? defaultAvatar}
-                name={yourStats?.name || "You"}
+                name={yourStats?.name || t("addUser.youLabel")}
               />
               <AvatarWithName
                 avatar={newRelationship.person.avatar}
-                name={newRelationship.person.name || "Them"}
+                name={newRelationship.person.name || t("addUser.themLabel")}
               />
             </View>
             {/*
@@ -162,7 +164,7 @@ const AddUser = () => {
             */}
             <IconScale
               iconScale={iconScaleStrength}
-              title="How strong is your relationship"
+              title={t("addUser.howStrong")}
               selectedValue={newRelationship.strength}
               onSelect={(value: number) =>
                 setNewRelationship((prev) => ({ ...prev, strength: value }))

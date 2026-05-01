@@ -6,6 +6,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useColorScheme } from "nativewind";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   LayoutChangeEvent,
   Pressable,
@@ -40,6 +41,7 @@ const Relation = ({
   const { colorScheme } = useColorScheme();
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
   const current = theme[resolvedScheme];
+  const { t } = useTranslation();
   if (compact) {
     return (
       <Pressable
@@ -139,7 +141,7 @@ const Relation = ({
                     textAlign: "center",
                   }}
                 >
-                  Your
+                  {t("relationshipList.yourPoints")}
                 </Text>
               </View>
               <View className="flex-1 ">
@@ -160,7 +162,7 @@ const Relation = ({
                     textAlign: "center",
                   }}
                 >
-                  Their
+                  {t("relationshipList.theirPoints")}
                 </Text>
               </View>
               <View className="flex-1 ">

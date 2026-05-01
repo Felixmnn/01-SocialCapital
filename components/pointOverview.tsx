@@ -3,6 +3,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useColorScheme } from "nativewind";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Modal, Pressable, Text, View } from "react-native";
 
 const Item = ({
@@ -33,6 +34,7 @@ const PointOverview = ({
   const { colorScheme } = useColorScheme();
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
   const current = theme[resolvedScheme];
+  const { t } = useTranslation();
   return (
     <>
       <LinearGradient
@@ -63,7 +65,11 @@ const PointOverview = ({
         </Pressable>
 
         <View className="flex-row justify-between w-full">
-          <Item iconName="user" label="You" points={myPoints} />
+          <Item
+            iconName="user"
+            label={t("pointOverview.you")}
+            points={myPoints}
+          />
           <View
             className=" bg-white"
             style={{
@@ -74,7 +80,7 @@ const PointOverview = ({
           />
           <Item
             iconName="users"
-            label="They"
+            label={t("pointOverview.they")}
             points={Math.floor(theirPoints)}
           />
           <View
@@ -87,7 +93,7 @@ const PointOverview = ({
           />
           <Item
             iconName="calculator"
-            label="Total"
+            label={t("pointOverview.total")}
             points={Math.floor(myPoints + theirPoints)}
           />
         </View>
@@ -130,28 +136,23 @@ const PointOverview = ({
                 marginBottom: 12,
               }}
             >
-              Wie setzen sich die Punkte zusammen?
+              {t("pointOverview.infoTitle")}
             </Text>
 
             <Text style={{ color: current.text, marginBottom: 8 }}>
-              You: Das sind deine aktuellen Beziehungspunkte ueber alle
-              Beziehungen hinweg.
+              {t("pointOverview.infoYou")}
             </Text>
             <Text style={{ color: current.text, marginBottom: 8 }}>
-              They: Das sind die Punkte, die deine Gegenueber aktuell in euren
-              Beziehungen haben.
+              {t("pointOverview.infoThey")}
             </Text>
             <Text style={{ color: current.text, marginBottom: 12 }}>
-              Total: Summe aus You + They.
+              {t("pointOverview.infoTotal")}
             </Text>
 
             <Text
               style={{ color: current.text, opacity: 0.85, lineHeight: 21 }}
             >
-              Die Punkte entstehen durch eure eingetragenen taeglichen Aktionen
-              (positiv/negativ). Die Wirkung einer Aktion wird durch die
-              Beziehungswerte (INK: Trust, Attention, Support) verstaerkt oder
-              abgeschwaecht.
+              {t("pointOverview.infoDetail")}
             </Text>
           </Pressable>
         </Pressable>

@@ -4,6 +4,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useColorScheme } from "nativewind";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Modal, Pressable, Text, View } from "react-native";
 import {
     AdEventType,
@@ -98,12 +99,6 @@ function getRelationshipState(
   return "critical";
 }
 
-function getRelationshipLabel(state: AppRelationshipState): string {
-  if (state === "critical") return "Kritisch";
-  if (state === "balanced") return "Neutral";
-  return "Sehr gut";
-}
-
 function getRelationshipIcon(state: AppRelationshipState): string {
   if (state === "critical") return "frown";
   if (state === "balanced") return "meh";
@@ -111,14 +106,24 @@ function getRelationshipIcon(state: AppRelationshipState): string {
 }
 
 const RewardedAdButton = ({
-  label = "App durch Ad unterstützen",
-  loadingLabel = "Ad lädt...",
+  label,
+  loadingLabel,
   onRewarded,
 }: RewardedAdButtonProps) => {
   const { generalSettings, setGeneralSettings } = useGlobalContext();
   const { colorScheme } = useColorScheme();
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
   const current = theme[resolvedScheme];
+  const { t } = useTranslation();
+  const adLabel = label ?? t("adBanner.support");
+  const adLoadingLabel = loadingLabel ?? t("adBanner.loading");
+
+  function getRelationshipLabel(state: AppRelationshipState): string {
+    if (state === "critical") return t("adBanner.critical");
+    if (state === "balanced") return t("adBanner.neutral");
+    return t("adBanner.veryGood");
+  }
+
   const [infoVisible, setInfoVisible] = React.useState(false);
 
   const adsInLast7Days = React.useMemo(
@@ -205,7 +210,7 @@ const RewardedAdButton = ({
           }}
         >
           <Text style={{ color: "#FFFFFF", fontWeight: "600", fontSize: 12 }}>
-            {loaded ? label : loadingLabel}
+            {loaded ? adLabel : adLoadingLabel}
           </Text>
         </Pressable>
       </View>
@@ -264,7 +269,7 @@ const RewardedAdButton = ({
                 textAlign: "center",
               }}
             >
-              App-Unterstützung
+              {t("adBanner.infoTitle")}
             </Text>
             <Text
               style={{
@@ -273,7 +278,7 @@ const RewardedAdButton = ({
                 textAlign: "center",
               }}
             >
-              Sieh dir Ads an, um die App zu unterstützen.
+              {t("adBanner.infoText")}
             </Text>
             <Pressable
               onPress={() => setInfoVisible(false)}
@@ -286,7 +291,7 @@ const RewardedAdButton = ({
               }}
             >
               <Text style={{ color: "#fff", fontWeight: "600" }}>
-                Schliessen
+                {t("adBanner.close")}
               </Text>
             </Pressable>
           </Pressable>

@@ -7,9 +7,9 @@ const EXAMPLE_BADGES: SpecificBadgeId[] = [
   "critical",
   "balanced",
   "positive",
-  "streak1",
-  "streak5",
-  "streak10",
+  "streak3",
+  "streak7",
+  "streak30",
 ];
 
 const BadgeCollection = ({

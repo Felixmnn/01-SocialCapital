@@ -62,6 +62,7 @@ const InkBadges = ({
             fontSize: 16,
             marginTop: 8,
             fontWeight: "bold",
+            textAlign: "center",
           }}
         >
           {label}

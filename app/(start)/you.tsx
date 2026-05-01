@@ -18,6 +18,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useColorScheme } from "nativewind";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Modal, Pressable, Text, View } from "react-native";
 
 /**TODO:
@@ -30,6 +31,7 @@ const You = () => {
   const { colorScheme } = useColorScheme();
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
   const current = theme[resolvedScheme];
+  const { t } = useTranslation();
   const [statusModalVisible, setStatusModalVisible] = React.useState(false);
   const [badgeModalVisible, setBadgeModalVisible] = React.useState(false);
   const [earnedPatch] = React.useState<SpecificBadgeId>("streak7");
@@ -60,16 +62,16 @@ const You = () => {
         : "smile-wink";
   const statusLabel =
     relationshipStatus === "positive"
-      ? "Geber"
+      ? t("you.statusGiver")
       : relationshipStatus === "critical"
-        ? "Nehmer"
-        : "Ausgeglichen";
+        ? t("you.statusReceiver")
+        : t("you.statusBalanced");
   const statusDescription =
     relationshipStatus === "positive"
-      ? "Du bist aktuell eher ein Geber: Du investierst insgesamt mehr in deine Beziehungen, als du zurückbekommst."
+      ? t("you.descriptionGiver")
       : relationshipStatus === "critical"
-        ? "Du bist aktuell eher ein Nehmer: Du bekommst insgesamt mehr aus deinen Beziehungen, als du selbst einbringst."
-        : "Du bist aktuell ausgeglichen: Geber und Nehmer sind bei dir ungefähr gleich verteilt.";
+        ? t("you.descriptionReceiver")
+        : t("you.descriptionBalanced");
   return (
     <View
       style={{
@@ -157,7 +159,7 @@ const You = () => {
                   marginBottom: 8,
                 }}
               >
-                Dein Status: {statusLabel}
+                {t("you.statusPrefix")}: {statusLabel}
               </Text>
               <Text
                 style={{

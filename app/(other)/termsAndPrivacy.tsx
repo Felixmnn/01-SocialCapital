@@ -3,6 +3,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useColorScheme } from "nativewind";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -10,6 +11,7 @@ const TermsAndPrivacy = () => {
   const { colorScheme } = useColorScheme();
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
   const current = theme[resolvedScheme];
+  const { t } = useTranslation();
 
   return (
     <SafeAreaView
@@ -35,7 +37,7 @@ const TermsAndPrivacy = () => {
           onPress={() => router.back()}
         />
         <Text style={{ color: current.text, fontSize: 20, fontWeight: "700" }}>
-          Terms & Privacy
+          {t("termsAndPrivacy.title")}
         </Text>
       </View>
 
@@ -56,18 +58,13 @@ const TermsAndPrivacy = () => {
           <Text
             style={{ color: current.text, fontSize: 18, fontWeight: "700" }}
           >
-            Terms of Service
+            {t("termsAndPrivacy.termsTitle")}
           </Text>
           <Text style={{ color: current.text, lineHeight: 22, marginTop: 10 }}>
-            Diese App dient der persoenlichen Nutzung zur Dokumentation von
-            Beziehungen und Aktivitaeten. Du bist verantwortlich fuer die
-            Inhalte, die du eintraegst. Eine missbraeuchliche oder rechtswidrige
-            Nutzung ist nicht erlaubt.
+            {t("termsAndPrivacy.termsText1")}
           </Text>
           <Text style={{ color: current.text, lineHeight: 22, marginTop: 10 }}>
-            Die bereitgestellten Auswertungen und Anzeigen dienen zur
-            Orientierung und stellen keine rechtliche, medizinische oder
-            psychologische Beratung dar.
+            {t("termsAndPrivacy.termsText2")}
           </Text>
         </View>
 
@@ -81,17 +78,13 @@ const TermsAndPrivacy = () => {
           <Text
             style={{ color: current.text, fontSize: 18, fontWeight: "700" }}
           >
-            Privacy Policy
+            {t("termsAndPrivacy.privacyTitle")}
           </Text>
           <Text style={{ color: current.text, lineHeight: 22, marginTop: 10 }}>
-            Deine Daten werden lokal auf deinem Geraet gespeichert. Ohne aktive
-            Export- oder Sync-Funktion erfolgt keine automatische Weitergabe an
-            Dritte.
+            {t("termsAndPrivacy.privacyText1")}
           </Text>
           <Text style={{ color: current.text, lineHeight: 22, marginTop: 10 }}>
-            Wenn du Daten exportierst oder Synchronisation aktivierst, liegt die
-            Verantwortung fuer die sichere Uebertragung und Speicherung bei der
-            von dir gewaehlten Umgebung.
+            {t("termsAndPrivacy.privacyText2")}
           </Text>
         </View>
       </ScrollView>
