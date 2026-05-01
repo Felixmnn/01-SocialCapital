@@ -3,6 +3,7 @@ import { Action } from "@/constants/constants";
 import { theme } from "@/constants/theme";
 import { useColorScheme } from "nativewind";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
 interface ActionListProps {
@@ -15,6 +16,7 @@ const ActionList: React.FC<ActionListProps> = ({ title, actions, onPress }) => {
   const { colorScheme } = useColorScheme();
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
   const current = theme[resolvedScheme];
+  const { t } = useTranslation();
   return (
     <View>
       <Text
@@ -31,7 +33,7 @@ const ActionList: React.FC<ActionListProps> = ({ title, actions, onPress }) => {
             key={index}
             iconName="check"
             onPress={() => onPress(action)}
-            title={action.actionId}
+            title={t(`actions.${action.actionId}`)}
             gradientType={action.startwert > 0 ? "positive" : "negative"}
           />
         ))}

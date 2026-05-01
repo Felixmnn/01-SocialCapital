@@ -217,5 +217,27 @@
     "attention_themYou_balanced": "Your attention level is balanced. This means {{name}} is generally attentive to your needs, interests, or problems.",
     "attention_themYou_high": "Your attention level is high. This means {{name}} regularly makes time for your needs, interests, or problems.",
     "attention_themYou_veryHigh": "Your attention level is very high. This means {{name}} always makes time for your needs, interests, or problems."
+  },
+  "actions": {
+    "Erkundigen": "Check in",
+    "Treffen vorschlagen": "Suggest meeting",
+    "Problem helfen": "Help with problem",
+    "Etwas ausgeben": "Spend on them",
+    "Etwas einladen": "Invite to something",
+    "Zusage einhalten": "Keep promise",
+    "Zeit nehmen": "Make time",
+    "Sich bedanken": "Say thank you",
+    "support anbieten": "Offer support",
+    "Ehrliches Kompliment": "Give honest compliment",
+    "Keine Zeit sagen": "Say no to time",
+    "Spontan absagen": "Cancel spontaneously",
+    "Unentschuldigt nicht kommen": "No-show without apology",
+    "Sich stark verspäten": "Be very late",
+    "Problem nicht helfen": "Refuse to help",
+    "Nachrichten ignorieren": "Ignore messages",
+    "Unfreundlich antworten": "Respond unkindly",
+    "Hinter Rücken reden": "Talk behind back",
+    "Desinteressiert sein": "Show disinterest",
+    "Versprechen nicht einhalten": "Break promise"
   }
 }

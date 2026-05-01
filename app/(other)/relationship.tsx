@@ -381,7 +381,7 @@ const Relationship = () => {
                   style={{ marginBottom: 8 }}
                 >
                   <Text style={{ color: current.text }}>
-                    {actorLabel}: {entry.actionID}
+                    {actorLabel}: {t(`actions.${entry.actionID}`)}
                   </Text>
                   <Text
                     style={{ color: current.text, opacity: 0.7, fontSize: 12 }}

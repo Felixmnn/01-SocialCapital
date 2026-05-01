@@ -217,5 +217,27 @@
     "attention_themYou_balanced": "Dein Aufmerksamkeitsniveau ist ausgeglichen. Das bedeutet, dass {{name}} in der Regel aufmerksam gegenüber deinen Bedürfnissen, Interessen oder Problemen ist.",
     "attention_themYou_high": "Dein Aufmerksamkeitsniveau ist hoch. Das bedeutet, dass {{name}} sich regelmäßig Zeit für deine Bedürfnisse, Interessen oder Probleme nimmt.",
     "attention_themYou_veryHigh": "Dein Aufmerksamkeitsniveau ist sehr hoch. Das bedeutet, dass {{name}} sich immer Zeit für deine Bedürfnisse, Interessen oder Probleme nimmt."
+  },
+  "actions": {
+    "Erkundigen": "Erkundigen",
+    "Treffen vorschlagen": "Treffen vorschlagen",
+    "Problem helfen": "Bei Problem helfen",
+    "Etwas ausgeben": "Etwas ausgeben",
+    "Etwas einladen": "Etwas einladen",
+    "Zusage einhalten": "Zusage einhalten",
+    "Zeit nehmen": "Zeit nehmen",
+    "Sich bedanken": "Sich bedanken",
+    "support anbieten": "Support anbieten",
+    "Ehrliches Kompliment": "Ehrliches Kompliment",
+    "Keine Zeit sagen": "Keine Zeit sagen",
+    "Spontan absagen": "Spontan absagen",
+    "Unentschuldigt nicht kommen": "Unentschuldigt nicht kommen",
+    "Sich stark verspäten": "Sich stark verspäten",
+    "Problem nicht helfen": "Bei Problem nicht helfen",
+    "Nachrichten ignorieren": "Nachrichten ignorieren",
+    "Unfreundlich antworten": "Unfreundlich antworten",
+    "Hinter Rücken reden": "Hinter Rücken reden",
+    "Desinteressiert sein": "Desinteressiert sein",
+    "Versprechen nicht einhalten": "Versprechen nicht einhalten"
   }
 }
