@@ -3,11 +3,19 @@ import AvatarNameEditor from "@/components/avatar/avatarNameEditor";
 import BadgeCollection from "@/components/badges/badgeCollection";
 import CustomButton from "@/components/customButton";
 import { theme } from "@/constants/theme";
-import { GeneralSettings } from "@/constants/types";
+import {
+  GeneralSettings,
+  SpecificBadgeId,
+  yourStats as YourStatsType,
+} from "@/constants/types";
+import { Relationship } from "@/constants/typesRelationship";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { FontAwesome5 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as DocumentPicker from "expo-document-picker";
+import * as FileSystem from "expo-file-system/legacy";
 import { router } from "expo-router";
+import * as Sharing from "expo-sharing";
 import { useColorScheme } from "nativewind";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -36,6 +44,183 @@ const sectionCardStyle = {
   borderRadius: 12,
   padding: 12,
 };
+
+type BackupPayload = {
+  version: 1;
+  exportedAt: string;
+  language: string;
+  yourStats: YourStatsType | null;
+  relationships: Relationship[];
+  generalSettings: GeneralSettings;
+};
+
+const VALID_BADGE_IDS: SpecificBadgeId[] = [
+  "critical",
+  "balanced",
+  "positive",
+  "veryPositive",
+  "trustworthy",
+  "attentive",
+  "supportive",
+  "giver",
+  "strongRelationship",
+  "receiver",
+  "streak3",
+  "streak7",
+  "streak30",
+  "streak60",
+  "streak67",
+  "streak90",
+  "streak180",
+  "streak365",
+  "streak500",
+  "streak1000",
+];
+
+const SKIN_COLORS = ["light", "medium-light", "medium", "medium-dark", "dark"];
+const HAIR_COLORS = ["black", "brown", "blonde", "red", "gray", "white"];
+const BEARD_TYPES = ["none", "mustache", "full"];
+const CHARACTERS = [
+  "character1",
+  "character2",
+  "character3",
+  "character4",
+  "character5",
+  "character6",
+  "character7",
+];
+const HAIR_TYPES = [
+  "type0",
+  "type1",
+  "type2",
+  "type3",
+  "type4",
+  "type5",
+  "type6",
+];
+const BACKGROUND_COLORS = ["blue", "green", "yellow", "purple", "orange"];
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function isAvatar(value: unknown): value is YourStatsType["avatar"] {
+  if (!isRecord(value)) return false;
+
+  return (
+    typeof value.skinColor === "string" &&
+    SKIN_COLORS.includes(value.skinColor) &&
+    typeof value.hairColor === "string" &&
+    HAIR_COLORS.includes(value.hairColor) &&
+    typeof value.beardType === "string" &&
+    BEARD_TYPES.includes(value.beardType) &&
+    typeof value.beardColor === "string" &&
+    HAIR_COLORS.includes(value.beardColor) &&
+    typeof value.selectedCharacter === "string" &&
+    CHARACTERS.includes(value.selectedCharacter) &&
+    typeof value.hairType === "string" &&
+    HAIR_TYPES.includes(value.hairType) &&
+    typeof value.backgroundColor === "string" &&
+    BACKGROUND_COLORS.includes(value.backgroundColor)
+  );
+}
+
+function isYourStats(value: unknown): value is YourStatsType {
+  if (!isRecord(value)) return false;
+  return typeof value.name === "string" && isAvatar(value.avatar);
+}
+
+function isInkValues(value: unknown): boolean {
+  if (!isRecord(value)) return false;
+  return (
+    typeof value.trust === "number" &&
+    typeof value.attention === "number" &&
+    typeof value.support === "number"
+  );
+}
+
+function isRelationship(value: unknown): value is Relationship {
+  if (!isRecord(value)) return false;
+  if (
+    typeof value.distance !== "number" ||
+    typeof value.strength !== "number"
+  ) {
+    return false;
+  }
+  if (
+    !isRecord(value.person) ||
+    typeof value.person.name !== "string" ||
+    !isAvatar(value.person.avatar)
+  ) {
+    return false;
+  }
+  if (
+    !isRecord(value.points) ||
+    typeof value.points.yourPoints !== "number" ||
+    typeof value.points.theirPoints !== "number"
+  ) {
+    return false;
+  }
+  if (
+    !isRecord(value.ink) ||
+    !isInkValues(value.ink.your) ||
+    !isInkValues(value.ink.their)
+  ) {
+    return false;
+  }
+  if (!Array.isArray(value.actions)) return false;
+
+  return value.actions.every((action) => {
+    if (!isRecord(action)) return false;
+    return (
+      (action.actor === "you" || action.actor === "them") &&
+      typeof action.actionID === "string" &&
+      typeof action.date === "string"
+    );
+  });
+}
+
+function normalizeImportedGeneralSettings(
+  settings: Partial<GeneralSettings> | null | undefined,
+): GeneralSettings {
+  const patches = Array.isArray(settings?.patches)
+    ? (settings?.patches.filter(
+        (value): value is SpecificBadgeId =>
+          typeof value === "string" &&
+          VALID_BADGE_IDS.includes(value as SpecificBadgeId),
+      ) ?? [])
+    : [];
+  const weekEntries = Array.isArray(settings?.weekEntries)
+    ? settings.weekEntries.filter(
+        (entry): entry is { date: string; completed: boolean } =>
+          !!entry &&
+          typeof entry.date === "string" &&
+          typeof entry.completed === "boolean",
+      )
+    : [];
+  const addsWatchedAt = Array.isArray(settings?.addsWatchedAt)
+    ? settings.addsWatchedAt.filter(
+        (value): value is string => typeof value === "string",
+      )
+    : [];
+
+  return {
+    theme: settings?.theme === "dark" ? "dark" : "light",
+    patches,
+    sync: settings?.sync ?? false,
+    notifications: settings?.notifications ?? false,
+    streakDuration:
+      typeof settings?.streakDuration === "number"
+        ? settings.streakDuration
+        : 0,
+    weekEntries,
+    addsWatchedAt,
+    lastOpenDate:
+      typeof settings?.lastOpenDate === "string"
+        ? settings.lastOpenDate
+        : undefined,
+  };
+}
 
 const Settings = () => {
   const { colorScheme, setColorScheme } = useColorScheme();
@@ -90,19 +275,105 @@ const Settings = () => {
     setColorScheme(mode);
   };
 
-  const handleExportData = () => {
-    const exportPayload = {
-      yourStats,
-      relationships,
-      generalSettings,
-    };
+  const handleExportData = async () => {
+    try {
+      if (!FileSystem.cacheDirectory) {
+        Alert.alert(t("settings.exportTitle"), t("settings.exportSuccess"));
+        return;
+      }
 
-    console.log("Export data:", exportPayload);
-    Alert.alert(t("settings.exportTitle"), t("settings.exportSuccess"));
+      const payload: BackupPayload = {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        language: i18n.language,
+        yourStats,
+        relationships,
+        generalSettings,
+      };
+
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+      const fileUri = `${FileSystem.cacheDirectory}socialcapital-backup-${timestamp}.json`;
+
+      await FileSystem.writeAsStringAsync(
+        fileUri,
+        JSON.stringify(payload, null, 2),
+        { encoding: FileSystem.EncodingType.UTF8 },
+      );
+
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(fileUri, {
+          mimeType: "application/json",
+          dialogTitle: t("settings.exportTitle"),
+          UTI: "public.json",
+        });
+      }
+
+      Alert.alert(t("settings.exportTitle"), t("settings.exportSuccess"));
+    } catch (error) {
+      console.error("Export failed:", error);
+      Alert.alert(t("settings.exportTitle"), t("settings.importInfo"));
+    }
   };
 
-  const handleImportData = () => {
-    Alert.alert(t("settings.importTitle"), t("settings.importInfo"));
+  const handleImportData = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        multiple: false,
+        type: "application/json",
+        copyToCacheDirectory: true,
+      });
+
+      if (result.canceled) return;
+
+      const selectedFile = result.assets?.[0];
+      if (!selectedFile?.uri) {
+        Alert.alert(t("settings.importTitle"), t("settings.importInfo"));
+        return;
+      }
+
+      const raw = await FileSystem.readAsStringAsync(selectedFile.uri, {
+        encoding: FileSystem.EncodingType.UTF8,
+      });
+
+      const parsed = JSON.parse(raw) as Partial<BackupPayload>;
+      const importedYourStats =
+        parsed.yourStats === null || parsed.yourStats === undefined
+          ? null
+          : isYourStats(parsed.yourStats)
+            ? parsed.yourStats
+            : undefined;
+      const importedRelationships = Array.isArray(parsed.relationships)
+        ? parsed.relationships
+        : undefined;
+      const importedGeneralSettings = normalizeImportedGeneralSettings(
+        parsed.generalSettings,
+      );
+
+      const hasValidRelationships =
+        Array.isArray(importedRelationships) &&
+        importedRelationships.every((relationship) =>
+          isRelationship(relationship),
+        );
+
+      if (importedYourStats === undefined || !hasValidRelationships) {
+        Alert.alert(t("settings.importTitle"), t("settings.importInfo"));
+        return;
+      }
+
+      setYourStats(importedYourStats);
+      setRelationships(importedRelationships);
+      setGeneralSettings(importedGeneralSettings);
+      setColorScheme(importedGeneralSettings.theme);
+
+      if (typeof parsed.language === "string") {
+        await i18n.changeLanguage(parsed.language);
+      }
+
+      Alert.alert(t("settings.importTitle"), t("settings.importInfo"));
+    } catch (error) {
+      console.error("Import failed:", error);
+      Alert.alert(t("settings.importTitle"), t("settings.importInfo"));
+    }
   };
 
   const handleResetApp = () => {
