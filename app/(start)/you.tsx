@@ -1,3 +1,4 @@
+import RewardedAdButton from "@/components/adBanner";
 import RenderAvatar from "@/components/avatar/avatar";
 import InkBadeCollection from "@/components/badges/inkBadeCollection";
 import GradientToBackground from "@/components/gradientToBackground";
@@ -195,6 +196,7 @@ const You = () => {
           support={calculateAverageSupport(relationships)}
           recipent="youTotal"
         />
+        <RewardedAdButton />
       </View>
       <Text style={{ color: current.text }}>Y</Text>
     </View>

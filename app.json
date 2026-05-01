@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Social Capital",
-    "slug": "social-capital",
+    "slug": "q-analytics",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -55,6 +55,7 @@
       "eas": {
         "projectId": "b57c9391-46e5-41ea-8500-aa48ad876239"
       }
-    }
+    },
+    "owner": "felix08"
   }
 }
