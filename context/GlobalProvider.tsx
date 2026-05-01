@@ -200,6 +200,7 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (loading) return;
     console.log("Loading data from AsyncStorage...");
     if (yourStats != null) {
       AsyncStorage.setItem("yourStats", JSON.stringify(yourStats));
@@ -211,7 +212,7 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
     }
     AsyncStorage.setItem("generalSettings", JSON.stringify(generalSettings));
     console.log("Saved generalSettings to AsyncStorage:", generalSettings);
-  }, [yourStats, relationships, generalSettings]);
+  }, [yourStats, relationships, generalSettings, loading]);
 
   useEffect(() => {
     const loadData = async () => {
