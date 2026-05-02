@@ -38,9 +38,9 @@ const GradientToBackground = ({
       style={{
         flex: 1,
         width: "100%",
-        maxHeight: 200,
+        maxHeight: 220,
         alignItems: "center",
-        justifyContent: "start",
+        justifyContent: "flex-start",
       }}
     >
       <View className="p-4 flex-row w-full justify-between">
