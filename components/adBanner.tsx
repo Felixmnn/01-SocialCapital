@@ -30,4 +30,3 @@ const RewardedAdButton = ({
 };
 
 export default RewardedAdButton;
-
