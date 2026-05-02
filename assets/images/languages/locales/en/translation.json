@@ -239,5 +239,9 @@
     "Hinter Rücken reden": "Talk behind back",
     "Desinteressiert sein": "Show disinterest",
     "Versprechen nicht einhalten": "Break promise"
+  },
+  "streak": {
+    "daysOfWeek": ["S", "M", "T", "W", "T", "F", "S"],
+    "daysLabel": "Days"
   }
 }

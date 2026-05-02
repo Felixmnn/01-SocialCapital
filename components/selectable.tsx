@@ -38,6 +38,7 @@ const Selectable = ({
         end={{ x: 1, y: 1 }}
         style={{
           borderRadius: 15,
+          padding: 3,
         }}
         className="flex-row items-center justify-center p-1 rounded-xl"
       >

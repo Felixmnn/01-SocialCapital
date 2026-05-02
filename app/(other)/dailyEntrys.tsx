@@ -231,7 +231,11 @@ const DailyEntrys = () => {
         {isFinished && <View className="flex-1" />}
       </View>
       {isFinished ? (
-        <View className="flex-1 items-center justify-center px-8">
+        <View
+          className="flex-1
+        max-w-[400px]
+        items-center justify-center px-8"
+        >
           <LinearGradient
             colors={current.veryPositive as [string, string]}
             style={{
@@ -335,7 +339,7 @@ const DailyEntrys = () => {
           </TouchableOpacity>
         </View>
       ) : (
-        <>
+        <View className="max-w-[400px] mb-[20px] items-center justify-center px-4">
           {yourStats && currentRelationship && (
             <AvatarCorrelation
               you={yourStats}
@@ -442,7 +446,7 @@ const DailyEntrys = () => {
               style={{ marginLeft: 20 }}
             />
           </View>
-        </>
+        </View>
       )}
     </SafeAreaView>
   );

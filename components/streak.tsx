@@ -4,6 +4,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useColorScheme } from "nativewind";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
 /** 
@@ -29,8 +30,9 @@ const Streak = ({
   const { colorScheme } = useColorScheme();
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
   const current = theme[resolvedScheme];
+  const { t } = useTranslation();
 
-  const dayLabels = ["S", "M", "D", "M", "D", "F", "S"];
+  const dayLabels = t("streak.daysOfWeek", { returnObjects: true }) as string[];
   const today = new Date().getDay();
 
   const getDayOfMonth = (dateString: string | undefined, index: number) => {
@@ -83,7 +85,7 @@ const Streak = ({
       <View className="items-center justify-center w-[60px]">
         <FontAwesome5 name="fire" size={40} color="white" />
         <Text className="text-white text-center font-bold text-l">
-          {duration + " Days"}
+          {duration + " " + t("streak.daysLabel")}
         </Text>
       </View>
       <View className="flex-row flex-1 justify-between items-center">

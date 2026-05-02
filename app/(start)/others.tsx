@@ -101,31 +101,40 @@ const Others = () => {
         justifyContent: "flex-start",
       }}
     >
-      <GradientToBackground
-        state={calculateRelationshipStatus()}
-        visibleComponents="cog"
-        onPressCog={() => router.push("/settings")}
+      <View>
+        <GradientToBackground
+          state={calculateRelationshipStatus()}
+          visibleComponents="cog"
+          onPressCog={() => router.push("/settings")}
+        >
+          {yourStats && (
+            <AvatarWithStats
+              avatar={yourStats.avatar}
+              name={yourStats.name}
+              points={relationships.reduce((acc, relationship) => {
+                return Math.floor(acc + relationship.points.yourPoints);
+              }, 0)}
+            />
+          )}
+        </GradientToBackground>
+      </View>
+      <View
+        className=""
+        style={{
+          maxWidth: 400,
+        }}
       >
-        {yourStats && (
-          <AvatarWithStats
-            avatar={yourStats.avatar}
-            name={yourStats.name}
-            points={relationships.reduce((acc, relationship) => {
-              return Math.floor(acc + relationship.points.yourPoints);
-            }, 0)}
-          />
-        )}
-      </GradientToBackground>
-      <RelationshipList
-        relationships={relationships}
-        onPressAddUser={() => router.push("/(other)/addUser")}
-        onPressRelationship={(_, index) =>
-          router.push({
-            pathname: "/(other)/relationship",
-            params: { relationshipIndex: String(index) },
-          })
-        }
-      />
+        <RelationshipList
+          relationships={relationships}
+          onPressAddUser={() => router.push("/(other)/addUser")}
+          onPressRelationship={(_, index) =>
+            router.push({
+              pathname: "/(other)/relationship",
+              params: { relationshipIndex: String(index) },
+            })
+          }
+        />
+      </View>
     </View>
   );
 };

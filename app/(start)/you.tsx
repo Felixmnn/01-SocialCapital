@@ -1,4 +1,3 @@
-import RewardedAdButton from "@/components/adBanner";
 import RenderAvatar from "@/components/avatar/avatar";
 import InkBadeCollection from "@/components/badges/inkBadeCollection";
 import GradientToBackground from "@/components/gradientToBackground";
@@ -174,7 +173,12 @@ const You = () => {
           </Pressable>
         </Modal>
       </GradientToBackground>
-      <View className="flex-1 w-full p-4">
+      <View
+        className="flex-1 w-full p-4"
+        style={{
+          maxWidth: 400,
+        }}
+      >
         <Streak
           weekEntrys={generalSettings.weekEntries}
           duration={generalSettings.streakDuration}
@@ -190,7 +194,9 @@ const You = () => {
           support={calculateAverageSupport(relationships)}
           recipent="youTotal"
         />
+        {/*
         <RewardedAdButton />
+        */}
       </View>
     </View>
   );

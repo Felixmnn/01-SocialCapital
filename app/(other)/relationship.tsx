@@ -332,7 +332,7 @@ const Relationship = () => {
         </Modal>
       </GradientToBackground>
       <ScrollView
-        className="flex-1 w-full"
+        className="flex-1 w-full max-w-[400px]"
         contentContainerStyle={{ padding: 16, paddingBottom: 32 }}
       >
         <View className="flex-row w-full justify-center">
@@ -358,7 +358,10 @@ const Relationship = () => {
         </View>
         <View
           className="mt-6 p-4 rounded-xl"
-          style={{ borderWidth: 1, borderColor: current.basic }}
+          style={{
+            borderWidth: 1,
+            borderColor: current.basic,
+          }}
         >
           <Text
             style={{ color: current.text, fontWeight: "700", marginBottom: 10 }}

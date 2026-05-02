@@ -227,9 +227,16 @@ const RowControl = ({
         backgroundColor: current.basic,
         borderRadius: 12,
         height: 40,
+        minWidth: 300,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: 12,
       }}
     >
-      <Text className="w-24 text-xs font-semibold text-zinc-300">{label}</Text>
+      <Text className="w-24 text-l text-center font-semibold text-zinc-300">
+        {label}
+      </Text>
 
       <View className="flex-row items-center gap-2">
         <Pressable
