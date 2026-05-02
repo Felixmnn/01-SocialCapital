@@ -12,10 +12,7 @@ import { Relationship } from "@/constants/typesRelationship";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { FontAwesome5 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as DocumentPicker from "expo-document-picker";
-import * as FileSystem from "expo-file-system/legacy";
 import { router } from "expo-router";
-import * as Sharing from "expo-sharing";
 import { useColorScheme } from "nativewind";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -276,104 +273,17 @@ const Settings = () => {
   };
 
   const handleExportData = async () => {
-    try {
-      if (!FileSystem.cacheDirectory) {
-        Alert.alert(t("settings.exportTitle"), t("settings.exportSuccess"));
-        return;
-      }
-
-      const payload: BackupPayload = {
-        version: 1,
-        exportedAt: new Date().toISOString(),
-        language: i18n.language,
-        yourStats,
-        relationships,
-        generalSettings,
-      };
-
-      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-      const fileUri = `${FileSystem.cacheDirectory}socialcapital-backup-${timestamp}.json`;
-
-      await FileSystem.writeAsStringAsync(
-        fileUri,
-        JSON.stringify(payload, null, 2),
-        { encoding: FileSystem.EncodingType.UTF8 },
-      );
-
-      if (await Sharing.isAvailableAsync()) {
-        await Sharing.shareAsync(fileUri, {
-          mimeType: "application/json",
-          dialogTitle: t("settings.exportTitle"),
-          UTI: "public.json",
-        });
-      }
-
-      Alert.alert(t("settings.exportTitle"), t("settings.exportSuccess"));
-    } catch (error) {
-      console.error("Export failed:", error);
-      Alert.alert(t("settings.exportTitle"), t("settings.importInfo"));
-    }
+    Alert.alert(
+      t("settings.exportTitle"),
+      "Export nicht verfügbar in dieser Version. Verwende die vollständige App für Datenexport.",
+    );
   };
 
   const handleImportData = async () => {
-    try {
-      const result = await DocumentPicker.getDocumentAsync({
-        multiple: false,
-        type: "application/json",
-        copyToCacheDirectory: true,
-      });
-
-      if (result.canceled) return;
-
-      const selectedFile = result.assets?.[0];
-      if (!selectedFile?.uri) {
-        Alert.alert(t("settings.importTitle"), t("settings.importInfo"));
-        return;
-      }
-
-      const raw = await FileSystem.readAsStringAsync(selectedFile.uri, {
-        encoding: FileSystem.EncodingType.UTF8,
-      });
-
-      const parsed = JSON.parse(raw) as Partial<BackupPayload>;
-      const importedYourStats =
-        parsed.yourStats === null || parsed.yourStats === undefined
-          ? null
-          : isYourStats(parsed.yourStats)
-            ? parsed.yourStats
-            : undefined;
-      const importedRelationships = Array.isArray(parsed.relationships)
-        ? parsed.relationships
-        : undefined;
-      const importedGeneralSettings = normalizeImportedGeneralSettings(
-        parsed.generalSettings,
-      );
-
-      const hasValidRelationships =
-        Array.isArray(importedRelationships) &&
-        importedRelationships.every((relationship) =>
-          isRelationship(relationship),
-        );
-
-      if (importedYourStats === undefined || !hasValidRelationships) {
-        Alert.alert(t("settings.importTitle"), t("settings.importInfo"));
-        return;
-      }
-
-      setYourStats(importedYourStats);
-      setRelationships(importedRelationships);
-      setGeneralSettings(importedGeneralSettings);
-      setColorScheme(importedGeneralSettings.theme);
-
-      if (typeof parsed.language === "string") {
-        await i18n.changeLanguage(parsed.language);
-      }
-
-      Alert.alert(t("settings.importTitle"), t("settings.importInfo"));
-    } catch (error) {
-      console.error("Import failed:", error);
-      Alert.alert(t("settings.importTitle"), t("settings.importInfo"));
-    }
+    Alert.alert(
+      t("settings.importTitle"),
+      "Import nicht verfügbar in dieser Version. Verwende die vollständige App für Datenimport.",
+    );
   };
 
   const handleResetApp = () => {
