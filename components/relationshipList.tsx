@@ -19,6 +19,18 @@ import RenderAvatar from "./avatar/avatar";
 const MIN_COMPACT_ITEM_WIDTH = 100;
 const COMPACT_ITEM_SPACING = 8;
 
+const getCompactColumnCount = (containerWidth: number) => {
+  if (containerWidth <= 0) return 1;
+
+  return Math.max(
+    1,
+    Math.floor(
+      (containerWidth + COMPACT_ITEM_SPACING) /
+        (MIN_COMPACT_ITEM_WIDTH + COMPACT_ITEM_SPACING),
+    ),
+  );
+};
+
 const Relation = ({
   name,
   avatar,
@@ -48,8 +60,7 @@ const Relation = ({
         onPress={onPress}
         style={{
           width: compactWidth,
-          paddingHorizontal: 4,
-          marginBottom: 8,
+          marginBottom: COMPACT_ITEM_SPACING,
         }}
       >
         <LinearGradient
@@ -239,10 +250,7 @@ const RelationshipList = ({
     return indexed;
   }, [relationships, sortRelationShips]);
 
-  const compactColumns = Math.max(
-    1,
-    Math.floor(compactContainerWidth / MIN_COMPACT_ITEM_WIDTH),
-  );
+  const compactColumns = getCompactColumnCount(compactContainerWidth);
   const compactItemWidth =
     compactContainerWidth > 0
       ? Math.floor(
@@ -296,12 +304,12 @@ const RelationshipList = ({
         }}
       >
         <View
-          key={details ? "details-layout" : `compact-layout-${compactColumns}`}
           onLayout={handleCompactLayout}
           style={{
             flexDirection: "row",
             flexWrap: "wrap",
             width: "100%",
+            columnGap: COMPACT_ITEM_SPACING,
           }}
         >
           {sortedRelationships.map(({ relationship, originalIndex }) => (
