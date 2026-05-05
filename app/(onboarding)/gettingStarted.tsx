@@ -7,8 +7,8 @@ import { theme } from "@/constants/theme";
 import { Avatar, Person, Relationship } from "@/constants/typesRelationship";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import {
-  gettingStartedButtonDisabled,
-  gettingStartedButtonText,
+    gettingStartedButtonDisabled,
+    gettingStartedButtonText,
 } from "@/functions/gettingStarted";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -25,6 +25,7 @@ const defaultAvatar: Avatar = {
   selectedCharacter: "character1",
   backgroundColor: "blue",
   hairType: "type1",
+  clothing: "typ1",
 };
 
 const defaultYou = {

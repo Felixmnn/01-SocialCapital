@@ -13,6 +13,7 @@ export type Avatar = {
     | "character7";
   hairType: "type0" | "type1" | "type2" | "type3" | "type4" | "type5" | "type6";
   backgroundColor: "blue" | "green" | "yellow" | "purple" | "orange";
+  clothing: "typ1" | "typ2" | "typ3" | "typ4" | "typ5" | "typ6" | "typ7";
 };
 
 export type Person = {

@@ -28,9 +28,6 @@ const CHARACTERS: Avatar["selectedCharacter"][] = [
   "character1",
   "character2",
   "character3",
-  "character4",
-  "character5",
-  "character6",
 ];
 
 const HAIRTYPES: Avatar["hairType"][] = [
@@ -49,6 +46,16 @@ const BACKGROUND_COLORS: Avatar["backgroundColor"][] = [
   "yellow",
   "purple",
   "orange",
+];
+
+const CLOTHING_TYPES: Avatar["clothing"][] = [
+  "typ1",
+  "typ2",
+  "typ3",
+  "typ4",
+  "typ5",
+  "typ6",
+  "typ7",
 ];
 
 const cycleValue = <T extends string>(
@@ -85,123 +92,155 @@ const AvatarEditor = ({
   const current = theme[resolvedScheme];
 
   return (
-    <View className=" max-w-md gap-2 rounded-2xl mt-2 ">
-      <RowControl
-        label="Character"
-        value={avatar.selectedCharacter}
-        onPrevious={() =>
-          updateField(
-            "selectedCharacter",
-            cycleValue(CHARACTERS, avatar.selectedCharacter, -1),
-          )
-        }
-        onNext={() =>
-          updateField(
-            "selectedCharacter",
-            cycleValue(CHARACTERS, avatar.selectedCharacter, 1),
-          )
-        }
-      />
-      <RowControl
-        label="Skin"
-        value={avatar.skinColor}
-        onPrevious={() =>
-          updateField(
-            "skinColor",
-            cycleValue(SKIN_COLORS, avatar.skinColor, -1),
-          )
-        }
-        onNext={() =>
-          updateField("skinColor", cycleValue(SKIN_COLORS, avatar.skinColor, 1))
-        }
-      />
+    <LinearGradient
+      colors={[current.purpleGradient[0], current.purpleGradient[1]]}
+      style={{
+        backgroundColor: current.basic,
+        borderRadius: 12,
+      }}
+      className=" max-w-md gap-2 rounded-2xl mt-2 rounded-2xl p-4"
+    >
+      <View className=" max-w-md gap-2 rounded-2xl mt-2 ">
+        <Text>Character</Text>
+        <RowControl
+          label="Character"
+          value={avatar.selectedCharacter}
+          onPrevious={() =>
+            updateField(
+              "selectedCharacter",
+              cycleValue(CHARACTERS, avatar.selectedCharacter, -1),
+            )
+          }
+          onNext={() =>
+            updateField(
+              "selectedCharacter",
+              cycleValue(CHARACTERS, avatar.selectedCharacter, 1),
+            )
+          }
+        />
+        <RowControl
+          label="Skin"
+          value={avatar.skinColor}
+          onPrevious={() =>
+            updateField(
+              "skinColor",
+              cycleValue(SKIN_COLORS, avatar.skinColor, -1),
+            )
+          }
+          onNext={() =>
+            updateField(
+              "skinColor",
+              cycleValue(SKIN_COLORS, avatar.skinColor, 1),
+            )
+          }
+        />
+        <Text>Hair</Text>
+        <RowControl
+          label="Hair"
+          value={avatar.hairColor}
+          onPrevious={() =>
+            updateField(
+              "hairColor",
+              cycleValue(HAIR_COLORS, avatar.hairColor, -1),
+            )
+          }
+          onNext={() =>
+            updateField(
+              "hairColor",
+              cycleValue(HAIR_COLORS, avatar.hairColor, 1),
+            )
+          }
+        />
 
-      <RowControl
-        label="Hair"
-        value={avatar.hairColor}
-        onPrevious={() =>
-          updateField(
-            "hairColor",
-            cycleValue(HAIR_COLORS, avatar.hairColor, -1),
-          )
-        }
-        onNext={() =>
-          updateField("hairColor", cycleValue(HAIR_COLORS, avatar.hairColor, 1))
-        }
-      />
+        {avatar.selectedCharacter !== "character1" &&
+          avatar.selectedCharacter !== "character3" &&
+          avatar.selectedCharacter !== "character6" &&
+          avatar.selectedCharacter !== "character5" && (
+            <RowControl
+              label="Beard"
+              value={avatar.beardType}
+              onPrevious={() =>
+                updateField(
+                  "beardType",
+                  cycleValue(BEARD_TYPES, avatar.beardType, -1),
+                )
+              }
+              onNext={() =>
+                updateField(
+                  "beardType",
+                  cycleValue(BEARD_TYPES, avatar.beardType, 1),
+                )
+              }
+            />
+          )}
 
-      {avatar.selectedCharacter !== "character1" &&
-        avatar.selectedCharacter !== "character7" &&
-        avatar.selectedCharacter !== "character6" &&
-        avatar.selectedCharacter !== "character5" && (
-          <RowControl
-            label="Beard"
-            value={avatar.beardType}
-            onPrevious={() =>
-              updateField(
-                "beardType",
-                cycleValue(BEARD_TYPES, avatar.beardType, -1),
-              )
-            }
-            onNext={() =>
-              updateField(
-                "beardType",
-                cycleValue(BEARD_TYPES, avatar.beardType, 1),
-              )
-            }
-          />
-        )}
-
-      {avatar.beardType !== "none" &&
-        avatar.selectedCharacter !== "character1" &&
-        avatar.selectedCharacter !== "character7" &&
-        avatar.selectedCharacter !== "character6" &&
-        avatar.selectedCharacter !== "character5" && (
-          <RowControl
-            label="Beard Color"
-            value={avatar.beardColor}
-            onPrevious={() =>
-              updateField(
-                "beardColor",
-                cycleValue(HAIR_COLORS, avatar.beardColor, -1),
-              )
-            }
-            onNext={() =>
-              updateField(
-                "beardColor",
-                cycleValue(HAIR_COLORS, avatar.beardColor, 1),
-              )
-            }
-          />
-        )}
-      <RowControl
-        label="Hair Type"
-        value={avatar.hairType}
-        onPrevious={() =>
-          updateField("hairType", cycleValue(HAIRTYPES, avatar.hairType, -1))
-        }
-        onNext={() =>
-          updateField("hairType", cycleValue(HAIRTYPES, avatar.hairType, 1))
-        }
-      />
-
-      <RowControl
-        label="Background"
-        value={avatar.backgroundColor}
-        onPrevious={() =>
-          updateField(
-            "backgroundColor",
-            cycleValue(BACKGROUND_COLORS, avatar.backgroundColor, -1),
-          )
-        }
-        onNext={() =>
-          updateField(
-            "backgroundColor",
-            cycleValue(BACKGROUND_COLORS, avatar.backgroundColor, 1),
-          )
-        }
-      />
-    </View>
+        {avatar.beardType !== "none" &&
+          avatar.selectedCharacter !== "character1" &&
+          avatar.selectedCharacter !== "character3" &&
+          avatar.selectedCharacter !== "character6" &&
+          avatar.selectedCharacter !== "character5" && (
+            <RowControl
+              label="Beard Color"
+              value={avatar.beardColor}
+              onPrevious={() =>
+                updateField(
+                  "beardColor",
+                  cycleValue(HAIR_COLORS, avatar.beardColor, -1),
+                )
+              }
+              onNext={() =>
+                updateField(
+                  "beardColor",
+                  cycleValue(HAIR_COLORS, avatar.beardColor, 1),
+                )
+              }
+            />
+          )}
+        <RowControl
+          label="Hair Type"
+          value={avatar.hairType}
+          onPrevious={() =>
+            updateField("hairType", cycleValue(HAIRTYPES, avatar.hairType, -1))
+          }
+          onNext={() =>
+            updateField("hairType", cycleValue(HAIRTYPES, avatar.hairType, 1))
+          }
+        />
+        <Text>Accessories</Text>
+        <RowControl
+          label="Background"
+          value={avatar.backgroundColor}
+          onPrevious={() =>
+            updateField(
+              "backgroundColor",
+              cycleValue(BACKGROUND_COLORS, avatar.backgroundColor, -1),
+            )
+          }
+          onNext={() =>
+            updateField(
+              "backgroundColor",
+              cycleValue(BACKGROUND_COLORS, avatar.backgroundColor, 1),
+            )
+          }
+        />
+        <RowControl
+          label="Clothing"
+          value={avatar.clothing}
+          onPrevious={() =>
+            updateField(
+              "clothing",
+              cycleValue(CLOTHING_TYPES, avatar.clothing, -1),
+            )
+          }
+          onNext={() =>
+            updateField(
+              "clothing",
+              cycleValue(CLOTHING_TYPES, avatar.clothing, 1),
+            )
+          }
+        />
+      </View>
+    </LinearGradient>
   );
 };
 

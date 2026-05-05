@@ -77,17 +77,20 @@ function normalizeGeneralSettings(
   };
 }
 
-type LegacyAvatar = Omit<Avatar, "hairType"> & {
+type LegacyAvatar = Omit<Avatar, "hairType" | "clothing"> & {
   hairType?: Avatar["hairType"] | "none";
+  clothing?: Avatar["clothing"];
 };
 
 function normalizeAvatar(avatar: LegacyAvatar): Avatar {
   const normalizedHairType =
     avatar.hairType === "none" ? "type0" : (avatar.hairType ?? "type1");
+  const normalizedClothing = avatar.clothing ?? "typ1";
 
   return {
     ...avatar,
     hairType: normalizedHairType,
+    clothing: normalizedClothing,
   };
 }
 

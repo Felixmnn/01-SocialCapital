@@ -21,6 +21,7 @@ const defaultAvatar: Avatar = {
   selectedCharacter: "character1",
   backgroundColor: "blue",
   hairType: "type1",
+  clothing: "typ1",
 };
 
 const defaultRelationship: Relationship = {
