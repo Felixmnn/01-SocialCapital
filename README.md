@@ -1,93 +1,93 @@
 # SocialCapital
 
-SocialCapital ist eine React-Native/Expo-App zur Reflexion von Beziehungen im Alltag.
-Die App hilft dabei, Beziehungen sichtbar zu machen, Aktionen zu tracken und ein besseres Gleichgewicht zwischen Geben und Nehmen zu entwickeln.
+SocialCapital is a React Native/Expo app for reflecting on everyday relationships.
+It helps you make relationships visible, track actions, and develop a better balance between giving and receiving.
 
-## Hauptfeatures
+## Main Features
 
-- Onboarding-Flows fur neue Nutzer (z. B. "About Us" und "Getting Started").
-- Personlicher Avatar und Profilbereich.
-- Beziehungen anlegen, bearbeiten und verwalten.
-- Daily Entry mit Timer-Logik fur "you" und "them" inklusive Aktionsauswahl.
-- Punkte- und Balance-Logik fur jede Beziehung.
-- Badge-/Ink-Badge-System als Motivation.
-- Statistik- und Ubersichts-Komponenten (Streak, Punkte, Verlaufe).
-- Mehrsprachigkeit uber i18n (DE, EN, ES, FRA).
-- Integration von Rewarded Ads.
+- Onboarding flows for new users (e.g. "About Us" and "Getting Started").
+- Personal avatar and profile area.
+- Create, edit, and manage relationships.
+- Daily Entry with timer logic for "you" and "them" including action selection.
+- Points and balance logic for each relationship.
+- Badge / Ink Badge system for motivation.
+- Statistics and overview components (streak, points, history).
+- Multi-language support via i18n (DE, EN, ES, FRA).
+- Rewarded Ads integration.
 
 ## Tech Stack
 
 - Expo + React Native
 - TypeScript
 - Expo Router (file-based routing)
-- NativeWind/Tailwind fur Styling
-- i18next/react-i18next fur Lokalisierung
-- EAS Build fur Store- und Release-Builds
+- NativeWind / Tailwind for styling
+- i18next / react-i18next for localization
+- EAS Build for store and release builds
 
-## Projektstruktur (Kurzuberblick)
+## Project Structure (Overview)
 
-- `app/`: Screens und Routing-Struktur
-- `components/`: Wiederverwendbare UI-Bausteine
-- `context/`: Globaler State (`GlobalProvider`)
-- `functions/`: Fachlogik (Scoring, Daily Entry, Stats)
-- `constants/`: Theme, Typen, statische Konfiguration
-- `assets/`: Bilder, Lokalisierungsdateien und weitere Ressourcen
+- `app/`: Screens and routing structure
+- `components/`: Reusable UI components
+- `context/`: Global state (`GlobalProvider`)
+- `functions/`: Business logic (scoring, daily entry, stats)
+- `constants/`: Theme, types, static configuration
+- `assets/`: Images, localization files, and other resources
 
-## Screenshots und App-Aufbau
+## Screenshots and App Structure
 
-Die folgende Reihenfolge zeigt den typischen Ablauf in der App und macht den Aufbau der wichtigsten Bereiche sichtbar.
+The following sequence shows the typical user flow through the app, illustrating how the main areas are built.
 
 ### 1) Onboarding
 
-Der Einstieg erklart den Zweck der App und leitet in die ersten Schritte.
+The entry point explains the purpose of the app and guides users through the first steps.
 
 <img src="assets/screenshots/aboutus.jpg" alt="Onboarding - About Us" width="300" />
 
-### 2) Beziehungs-Ubersicht
+### 2) Relationships Overview
 
-Hier siehst du alle angelegten Beziehungen auf einen Blick.
+A glance at all your added relationships.
 
 <img src="assets/screenshots/friendsOverview.jpg" alt="Friends Overview" width="300" />
 
-### 3) Relationship-Ansicht (pro Person)
+### 3) Relationship View (per person)
 
-Diese Detailansicht zeigt den Status aus deiner Perspektive fur einzelne Beziehungen.
+The detail view shows the status of individual relationships from your perspective.
 
 <img src="assets/screenshots/releationshipYouWithFriendX.jpg" alt="Relationship - Friend X" width="240" />
 <img src="assets/screenshots/releationshipYouWithFriendY.jpg" alt="Relationship - Friend Y" width="240" />
 <img src="assets/screenshots/releationshipYouWithFriendZ.jpg" alt="Relationship - Friend Z" width="240" />
 
-### 4) Beziehungsstarke und Balance
+### 4) Relationship Strength and Balance
 
-Visualisierung der Beziehungsdynamik und des aktuellen Gleichgewichts.
+Visualization of the relationship dynamic and the current give/receive balance.
 
 <img src="assets/screenshots/relationshipStrength.jpg" alt="Relationship Strength" width="300" />
 
-### 5) Entwicklung nach ersten Eintragen
+### 5) Progress After First Entries
 
-So verandert sich die Ubersicht nach den ersten Daily Entries.
+How the overview changes once you start logging Daily Entries.
 
 <img src="assets/screenshots/friendsOverviewAfterFirstEntrys.jpg" alt="Friends Overview after first entries" width="300" />
 
-### 6) Avatar- und Profilbearbeitung
+### 6) Avatar and Profile Editing
 
-Du kannst sowohl den eigenen Avatar als auch den Avatar einer Beziehung anpassen.
+You can customize both your own avatar and the avatar of any relationship.
 
 <img src="assets/screenshots/editAvatar.jpg" alt="Edit own avatar" width="240" />
 <img src="assets/screenshots/editAvarFriend.jpg" alt="Edit friend avatar" width="240" />
 
-### Architektur in einem Satz
+### Architecture in One Line
 
-Onboarding -> Ubersicht -> Relationship-Details -> Daily Entry/Balance -> Avatar-Anpassung.
+Onboarding → Overview → Relationship Details → Daily Entry / Balance → Avatar Customization
 
-## Setup und Entwicklung
+## Setup and Development
 
-### Voraussetzungen
+### Prerequisites
 
-- Node.js (LTS empfohlen)
+- Node.js (LTS recommended)
 - npm
-- Expo CLI (optional, alternativ uber `npx expo`)
-- Android Studio / Xcode (je nach Zielplattform)
+- Expo CLI (optional, alternatively via `npx expo`)
+- Android Studio / Xcode (depending on target platform)
 
 ### Installation
 
@@ -95,13 +95,13 @@ Onboarding -> Ubersicht -> Relationship-Details -> Daily Entry/Balance -> Avatar
 npm install
 ```
 
-### Development-Server starten
+### Start the Development Server
 
 ```bash
 npm run start
 ```
 
-Optionale Targets:
+Optional targets:
 
 ```bash
 npm run android
@@ -109,40 +109,40 @@ npm run ios
 npm run web
 ```
 
-## Bundlen und Builds
+## Bundling and Builds
 
-Es gibt zwei gängige Wege, die App zu bundlen bzw. Release-Artefakte zu bauen.
+There are two common ways to bundle the app and produce release artifacts.
 
-### 1) EAS Build (empfohlen)
+### 1) EAS Build (recommended)
 
-Die Konfiguration liegt in `eas.json` mit den Profilen `development`, `preview` und `production`.
+The configuration lives in `eas.json` with the profiles `development`, `preview`, and `production`.
 
-Android APK fur internes Testing:
+Android APK for internal testing:
 
 ```bash
 eas build --platform android --profile preview
 ```
 
-Android App Bundle (AAB) fur Play Store:
+Android App Bundle (AAB) for the Play Store:
 
 ```bash
 eas build --platform android --profile production
 ```
 
-iOS Release-Build:
+iOS release build:
 
 ```bash
 eas build --platform ios --profile production
 ```
 
-Wichtig:
+Important:
 
-- Vor dem ersten Build bei Expo anmelden: `eas login`
-- Falls benotigt, Umgebungsvariablen in EAS/CI setzen (z. B. `EXPO_PUBLIC_API_URL`)
+- Log in to Expo before the first build: `eas login`
+- Set environment variables in EAS/CI as needed (e.g. `EXPO_PUBLIC_API_URL`)
 
-### 2) Lokales Android Bundling (Gradle)
+### 2) Local Android Bundling (Gradle)
 
-Da ein `android/`-Ordner vorhanden ist, kannst du auch lokal ein AAB bauen:
+Since an `android/` folder is present, you can also build an AAB locally:
 
 ```bash
 cd android
@@ -156,22 +156,22 @@ cd android
 .\gradlew.bat bundleRelease
 ```
 
-Das Ergebnis liegt typischerweise unter:
+The output is typically located at:
 
 ```text
 android/app/build/outputs/bundle/release/
 ```
 
-## Qualitatssicherung
+## Code Quality
 
-Linting ausfuhren:
+Run linting:
 
 ```bash
 npm run lint
 ```
 
-## Hinweise
+## Notes
 
-- Routing erfolgt uber Expo Router mit Dateistruktur in `app/`.
-- Lokalisierungen liegen unter `assets/images/languages/locales/`.
-- App-Verhalten und Scoring sind stark an den globalen Context und die Funktionen in `functions/` gekoppelt.
+- Routing is handled by Expo Router using the file structure in `app/`.
+- Localization files are located under `assets/images/languages/locales/`.
+- App behavior and scoring are tightly coupled to the global context and the functions in `functions/`.
