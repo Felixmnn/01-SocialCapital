@@ -113,10 +113,12 @@ function updateRelationshipsDailyRecovery(
       yourPoints: calculateNewPoints(
         relationship.points.yourPoints,
         referenceDate,
+        relationship.strength,
       ),
       theirPoints: calculateNewPoints(
         relationship.points.theirPoints,
         referenceDate,
+        relationship.strength,
       ),
     },
     ink: {

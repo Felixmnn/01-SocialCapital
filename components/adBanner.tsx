@@ -7,10 +7,10 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, Pressable, Text, View } from "react-native";
 import {
-    AdEventType,
-    RewardedAd,
-    RewardedAdEventType,
-    TestIds,
+  AdEventType,
+  RewardedAd,
+  RewardedAdEventType,
+  TestIds,
 } from "react-native-google-mobile-ads";
 
 const PROD_UNIT_ID = "ca-app-pub-9834411851111627/4978218870";
@@ -152,6 +152,8 @@ const RewardedAdButton = ({
       onRewarded?.();
     }, [onRewarded, setGeneralSettings]),
   );
+
+  if (!loaded) return null;
 
   return (
     <LinearGradient

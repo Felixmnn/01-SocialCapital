@@ -128,32 +128,116 @@ const PointOverview = ({
               backgroundColor: current.background,
             }}
           >
-            <Text
+            {/* Header */}
+            <View
               style={{
-                color: current.text,
-                fontWeight: "700",
-                fontSize: 18,
-                marginBottom: 12,
+                flexDirection: "row",
+                alignItems: "center",
+                marginBottom: 14,
+                gap: 10,
               }}
             >
-              {t("pointOverview.infoTitle")}
-            </Text>
+              <View
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 18,
+                  backgroundColor: current.purpleGradient[0],
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <FontAwesome5 name="star" size={16} color="#fff" solid />
+              </View>
+              <Text
+                style={{
+                  color: current.text,
+                  fontWeight: "700",
+                  fontSize: 16,
+                  flexShrink: 1,
+                }}
+              >
+                {t("pointOverview.infoTitle")}
+              </Text>
+            </View>
 
-            <Text style={{ color: current.text, marginBottom: 8 }}>
-              {t("pointOverview.infoYou")}
-            </Text>
-            <Text style={{ color: current.text, marginBottom: 8 }}>
-              {t("pointOverview.infoThey")}
-            </Text>
-            <Text style={{ color: current.text, marginBottom: 12 }}>
-              {t("pointOverview.infoTotal")}
-            </Text>
+            {/* Row items */}
+            {(
+              [
+                { icon: "user", key: "infoYou" },
+                { icon: "users", key: "infoThey" },
+                { icon: "calculator", key: "infoTotal" },
+              ] as { icon: string; key: string }[]
+            ).map(({ icon, key }) => (
+              <View
+                key={key}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "flex-start",
+                  marginBottom: 8,
+                  gap: 10,
+                }}
+              >
+                <View
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: 14,
+                    backgroundColor: current.purpleGradient[1],
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginTop: 1,
+                  }}
+                >
+                  <FontAwesome5 name={icon} size={12} color="#fff" solid />
+                </View>
+                <Text
+                  style={{
+                    color: current.text,
+                    fontSize: 13,
+                    lineHeight: 20,
+                    flex: 1,
+                  }}
+                >
+                  {t(`pointOverview.${key}`)}
+                </Text>
+              </View>
+            ))}
 
-            <Text
-              style={{ color: current.text, opacity: 0.85, lineHeight: 21 }}
+            {/* Detail */}
+            <View
+              style={{
+                marginTop: 6,
+                padding: 10,
+                borderRadius: 10,
+                backgroundColor:
+                  resolvedScheme === "dark"
+                    ? "rgba(255,255,255,0.06)"
+                    : "rgba(0,0,0,0.05)",
+                flexDirection: "row",
+                alignItems: "flex-start",
+                gap: 8,
+              }}
             >
-              {t("pointOverview.infoDetail")}
-            </Text>
+              <FontAwesome5
+                name="info-circle"
+                size={13}
+                color={current.purpleGradient[0]}
+                solid
+                style={{ marginTop: 2 }}
+              />
+              <Text
+                style={{
+                  color: current.text,
+                  opacity: 0.85,
+                  fontSize: 12,
+                  lineHeight: 18,
+                  flex: 1,
+                }}
+              >
+                {t("pointOverview.infoDetail")}
+              </Text>
+            </View>
           </Pressable>
         </Pressable>
       </Modal>

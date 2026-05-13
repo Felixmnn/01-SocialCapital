@@ -216,7 +216,8 @@
     "attention_themYou_low": "Your attention level is rather low. This means {{name}} occasionally showed disinterest in your needs, interests, or problems.",
     "attention_themYou_balanced": "Your attention level is balanced. This means {{name}} is generally attentive to your needs, interests, or problems.",
     "attention_themYou_high": "Your attention level is high. This means {{name}} regularly makes time for your needs, interests, or problems.",
-    "attention_themYou_veryHigh": "Your attention level is very high. This means {{name}} always makes time for your needs, interests, or problems."
+    "attention_themYou_veryHigh": "Your attention level is very high. This means {{name}} always makes time for your needs, interests, or problems.",
+    "improve_hint": "Improve score"
   },
   "actions": {
     "Erkundigen": "Check in",

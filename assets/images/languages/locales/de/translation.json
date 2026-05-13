@@ -216,7 +216,8 @@
     "attention_themYou_low": "Dein Aufmerksamkeitsniveau ist eher niedrig. Das bedeutet, dass {{name}} gelegentlich Desinteresse an deinen Bedürfnissen, Interessen oder Problemen gezeigt hat.",
     "attention_themYou_balanced": "Dein Aufmerksamkeitsniveau ist ausgeglichen. Das bedeutet, dass {{name}} in der Regel aufmerksam gegenüber deinen Bedürfnissen, Interessen oder Problemen ist.",
     "attention_themYou_high": "Dein Aufmerksamkeitsniveau ist hoch. Das bedeutet, dass {{name}} sich regelmäßig Zeit für deine Bedürfnisse, Interessen oder Probleme nimmt.",
-    "attention_themYou_veryHigh": "Dein Aufmerksamkeitsniveau ist sehr hoch. Das bedeutet, dass {{name}} sich immer Zeit für deine Bedürfnisse, Interessen oder Probleme nimmt."
+    "attention_themYou_veryHigh": "Dein Aufmerksamkeitsniveau ist sehr hoch. Das bedeutet, dass {{name}} sich immer Zeit für deine Bedürfnisse, Interessen oder Probleme nimmt.",
+    "improve_hint": "Werte verbessern"
   },
   "actions": {
     "Erkundigen": "Erkundigen",

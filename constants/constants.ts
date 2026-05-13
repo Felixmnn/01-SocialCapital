@@ -187,6 +187,7 @@ export function calculateNewINKValue(
 export function calculateNewPoints(
   currentPoints: number,
   lastUpdateDate: Date,
+  strength: number = 1,
 ) {
   const today = new Date();
   const timeDiff = today.getTime() - lastUpdateDate.getTime();
@@ -194,7 +195,7 @@ export function calculateNewPoints(
   if (amountOfDays <= 0) {
     return currentPoints;
   }
-  const nextPoints =
-    currentPoints + amountOfDays * recoveryFactorsDaily.relationshipPoints;
-  return Math.min(currentPoints, nextPoints);
+  const decayPerDay = 1 / Math.max(1, strength);
+  const nextPoints = currentPoints - amountOfDays * decayPerDay;
+  return Math.max(0, nextPoints);
 }

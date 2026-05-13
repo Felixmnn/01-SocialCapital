@@ -1,9 +1,12 @@
 import InkBadges from "@/components/badges/inkBadges";
+import { positiveAction } from "@/constants/constants";
 import { theme } from "@/constants/theme";
 import { Status } from "@/constants/types";
+import { LinearGradient } from "expo-linear-gradient";
 import { useColorScheme } from "nativewind";
 import React from "react";
-import { Modal, Pressable, Text } from "react-native";
+import { useTranslation } from "react-i18next";
+import { Modal, Pressable, Text, View } from "react-native";
 
 type InkBadgeInfoModalProps = {
   visible: boolean;
@@ -27,6 +30,25 @@ const InkBadgeInfoModal = ({
   const { colorScheme } = useColorScheme();
   const resolvedScheme = colorScheme === "dark" ? "dark" : "light";
   const current = theme[resolvedScheme];
+  const { t } = useTranslation();
+
+  const recommendationCategory =
+    icon === "shield-alt"
+      ? "trust"
+      : icon === "hands-helping"
+        ? "support"
+        : icon === "eye"
+          ? "attention"
+          : null;
+
+  const recommendedActions = positiveAction
+    .filter((action) =>
+      recommendationCategory
+        ? action.ink_kategorie === recommendationCategory
+        : true,
+    )
+    .sort((a, b) => b.startwert - a.startwert)
+    .slice(0, 4);
 
   return (
     <Modal
@@ -70,6 +92,53 @@ const InkBadgeInfoModal = ({
           >
             {description}
           </Text>
+
+          <Text
+            style={{
+              marginTop: 14,
+              color: current.text,
+              textAlign: "center",
+              lineHeight: 20,
+              opacity: 0.85,
+              fontWeight: "600",
+            }}
+          >
+            {t("inkBadge.improve_hint")}
+          </Text>
+
+          <View
+            style={{
+              marginTop: 12,
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
+          >
+            {recommendedActions.map((action) => (
+              <View
+                key={action.actionId}
+                style={{ marginHorizontal: 4, marginVertical: 4 }}
+              >
+                <LinearGradient
+                  colors={[current.positive[0], current.positive[1]]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={{
+                    borderRadius: 15,
+                    paddingHorizontal: 10,
+                    paddingVertical: 6,
+                    opacity: 0.9,
+                  }}
+                >
+                  <Text
+                    style={{ color: "#fff", fontWeight: "700", fontSize: 12 }}
+                  >
+                    {t(`actions.${action.actionId}`)}
+                  </Text>
+                </LinearGradient>
+              </View>
+            ))}
+          </View>
         </Pressable>
       </Pressable>
     </Modal>

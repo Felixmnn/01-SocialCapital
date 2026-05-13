@@ -1,50 +1,177 @@
-# Welcome to your Expo app 👋
+# SocialCapital
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+SocialCapital ist eine React-Native/Expo-App zur Reflexion von Beziehungen im Alltag.
+Die App hilft dabei, Beziehungen sichtbar zu machen, Aktionen zu tracken und ein besseres Gleichgewicht zwischen Geben und Nehmen zu entwickeln.
 
-## Get started
+## Hauptfeatures
 
-1. Install dependencies
+- Onboarding-Flows fur neue Nutzer (z. B. "About Us" und "Getting Started").
+- Personlicher Avatar und Profilbereich.
+- Beziehungen anlegen, bearbeiten und verwalten.
+- Daily Entry mit Timer-Logik fur "you" und "them" inklusive Aktionsauswahl.
+- Punkte- und Balance-Logik fur jede Beziehung.
+- Badge-/Ink-Badge-System als Motivation.
+- Statistik- und Ubersichts-Komponenten (Streak, Punkte, Verlaufe).
+- Mehrsprachigkeit uber i18n (DE, EN, ES, FRA).
+- Integration von Rewarded Ads.
 
-   ```bash
-   npm install
-   ```
+## Tech Stack
 
-2. Start the app
+- Expo + React Native
+- TypeScript
+- Expo Router (file-based routing)
+- NativeWind/Tailwind fur Styling
+- i18next/react-i18next fur Lokalisierung
+- EAS Build fur Store- und Release-Builds
 
-   ```bash
-   npx expo start
-   ```
+## Projektstruktur (Kurzuberblick)
 
-In the output, you'll find options to open the app in a
+- `app/`: Screens und Routing-Struktur
+- `components/`: Wiederverwendbare UI-Bausteine
+- `context/`: Globaler State (`GlobalProvider`)
+- `functions/`: Fachlogik (Scoring, Daily Entry, Stats)
+- `constants/`: Theme, Typen, statische Konfiguration
+- `assets/`: Bilder, Lokalisierungsdateien und weitere Ressourcen
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Screenshots und App-Aufbau
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Die folgende Reihenfolge zeigt den typischen Ablauf in der App und macht den Aufbau der wichtigsten Bereiche sichtbar.
 
-## Get a fresh project
+### 1) Onboarding
 
-When you're ready, run:
+Der Einstieg erklart den Zweck der App und leitet in die ersten Schritte.
+
+<img src="assets/screenshots/aboutus.jpg" alt="Onboarding - About Us" width="300" />
+
+### 2) Beziehungs-Ubersicht
+
+Hier siehst du alle angelegten Beziehungen auf einen Blick.
+
+<img src="assets/screenshots/friendsOverview.jpg" alt="Friends Overview" width="300" />
+
+### 3) Relationship-Ansicht (pro Person)
+
+Diese Detailansicht zeigt den Status aus deiner Perspektive fur einzelne Beziehungen.
+
+<img src="assets/screenshots/releationshipYouWithFriendX.jpg" alt="Relationship - Friend X" width="240" />
+<img src="assets/screenshots/releationshipYouWithFriendY.jpg" alt="Relationship - Friend Y" width="240" />
+<img src="assets/screenshots/releationshipYouWithFriendZ.jpg" alt="Relationship - Friend Z" width="240" />
+
+### 4) Beziehungsstarke und Balance
+
+Visualisierung der Beziehungsdynamik und des aktuellen Gleichgewichts.
+
+<img src="assets/screenshots/relationshipStrength.jpg" alt="Relationship Strength" width="300" />
+
+### 5) Entwicklung nach ersten Eintragen
+
+So verandert sich die Ubersicht nach den ersten Daily Entries.
+
+<img src="assets/screenshots/friendsOverviewAfterFirstEntrys.jpg" alt="Friends Overview after first entries" width="300" />
+
+### 6) Avatar- und Profilbearbeitung
+
+Du kannst sowohl den eigenen Avatar als auch den Avatar einer Beziehung anpassen.
+
+<img src="assets/screenshots/editAvatar.jpg" alt="Edit own avatar" width="240" />
+<img src="assets/screenshots/editAvarFriend.jpg" alt="Edit friend avatar" width="240" />
+
+### Architektur in einem Satz
+
+Onboarding -> Ubersicht -> Relationship-Details -> Daily Entry/Balance -> Avatar-Anpassung.
+
+## Setup und Entwicklung
+
+### Voraussetzungen
+
+- Node.js (LTS empfohlen)
+- npm
+- Expo CLI (optional, alternativ uber `npx expo`)
+- Android Studio / Xcode (je nach Zielplattform)
+
+### Installation
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Development-Server starten
 
-## Learn more
+```bash
+npm run start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+Optionale Targets:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npm run android
+npm run ios
+npm run web
+```
 
-## Join the community
+## Bundlen und Builds
 
-Join our community of developers creating universal apps.
+Es gibt zwei gängige Wege, die App zu bundlen bzw. Release-Artefakte zu bauen.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### 1) EAS Build (empfohlen)
+
+Die Konfiguration liegt in `eas.json` mit den Profilen `development`, `preview` und `production`.
+
+Android APK fur internes Testing:
+
+```bash
+eas build --platform android --profile preview
+```
+
+Android App Bundle (AAB) fur Play Store:
+
+```bash
+eas build --platform android --profile production
+```
+
+iOS Release-Build:
+
+```bash
+eas build --platform ios --profile production
+```
+
+Wichtig:
+
+- Vor dem ersten Build bei Expo anmelden: `eas login`
+- Falls benotigt, Umgebungsvariablen in EAS/CI setzen (z. B. `EXPO_PUBLIC_API_URL`)
+
+### 2) Lokales Android Bundling (Gradle)
+
+Da ein `android/`-Ordner vorhanden ist, kannst du auch lokal ein AAB bauen:
+
+```bash
+cd android
+./gradlew bundleRelease
+```
+
+Windows PowerShell:
+
+```powershell
+cd android
+.\gradlew.bat bundleRelease
+```
+
+Das Ergebnis liegt typischerweise unter:
+
+```text
+android/app/build/outputs/bundle/release/
+```
+
+## Qualitatssicherung
+
+Linting ausfuhren:
+
+```bash
+npm run lint
+```
+
+## Hinweise
+
+- Routing erfolgt uber Expo Router mit Dateistruktur in `app/`.
+- Lokalisierungen liegen unter `assets/images/languages/locales/`.
+- App-Verhalten und Scoring sind stark an den globalen Context und die Funktionen in `functions/` gekoppelt.
